@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Theme" path="res://rookframe/ui/theme/rookframe_theme.tres" id="theme"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/layout/section.tscn" id="section"]
+
+[node name="PackageWindow" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("theme")
+
+[node name="Introduction" parent="." instance=ExtResource("section")]
+layout_mode = 2
+title = "Calendar"
+description = "A Gregorian calendar for your World."
+
+[node name="Description" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "World dates and dated notes."
+autowrap_mode = 2

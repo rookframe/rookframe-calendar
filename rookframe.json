@@ -1,0 +1,30 @@
+{
+  "manifestVersion": 1,
+  "id": "aae579da-5392-4507-8eaa-0d918af58076",
+  "kind": "optional",
+  "name": "Calendar",
+  "version": "0.1.0",
+  "summary": "Calendar",
+  "sdk": {
+    "edition": "2027",
+    "minimumRevision": 1
+  },
+  "rookframeCompatibility": {
+    "minimum": "0.1.0",
+    "verified": "0.1.0"
+  },
+  "implementation": {
+    "entryPoint": "logic/implementation.gd"
+  },
+  "presentations": [
+    {
+      "id": "default",
+      "experiences": [
+        "desktop",
+        "tablet",
+        "phone"
+      ],
+      "entryPoint": "ui/presentation.gd"
+    }
+  ]
+}
