@@ -1,24 +1,110 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Theme" path="res://rookframe/ui/theme/rookframe_theme.tres" id="theme"]
-[ext_resource type="PackedScene" path="res://rookframe/ui/components/layout/section.tscn" id="section"]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/calendar.gd" id="script"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_field.tscn" id="field"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_area.tscn" id="area"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/data/structured_row.tscn" id="row"]
 
-[node name="PackageWindow" type="VBoxContainer"]
+[node name="Calendar" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+custom_minimum_size = Vector2(0, 520)
 size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource("theme")
+script = ExtResource("script")
 
-[node name="Introduction" parent="." instance=ExtResource("section")]
-layout_mode = 2
-title = "Calendar"
-description = "A Gregorian calendar for your World."
+[node name="Layout" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
 
-[node name="Description" type="Label" parent="."]
+[node name="Header" type="Label" parent="Layout"]
 layout_mode = 2
-theme_type_variation = &"RookframeBody"
-text = "World dates and dated notes."
+theme_type_variation = &"RookframeHeading"
+text = "Calendar"
+
+[node name="WorldDate" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "World date not set"
+
+[node name="Body" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Fields" type="VBoxContainer" parent="Layout/Body"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Date" parent="Layout/Body/Fields" instance=ExtResource("field")]
+layout_mode = 2
+label_text = "View date"
+value = "0001-01-01"
+help_text = "Gregorian calendar · YYYY-MM-DD"
+
+[node name="DateActions" type="VBoxContainer" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SetDate" type="Button" parent="Layout/Body/Fields/DateActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeSecondaryButton"
+text = "Set world date"
+
+[node name="Advance" type="Button" parent="Layout/Body/Fields/DateActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Advance one day"
+
+[node name="NotesHeading" type="Label" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_type_variation = &"RookframeHeading"
+text = "Dated notes"
+
+[node name="Draft" parent="Layout/Body/Fields" instance=ExtResource("row")]
+layout_mode = 2
+title = "Untitled note"
+detail = "0001-01-01"
+status_text = "Draft"
+
+[node name="NoteTitle" parent="Layout/Body/Fields" instance=ExtResource("field")]
+layout_mode = 2
+label_text = "Note title"
+
+[node name="NoteBody" parent="Layout/Body/Fields" instance=ExtResource("area")]
+layout_mode = 2
+label_text = "Note"
+placeholder = "Write a note for this date…"
+
+[node name="Status" type="Label" parent="Layout"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "Drafts stay here until you leave the World."
 autowrap_mode = 2
+
+[node name="SaveNote" type="Button" parent="Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframePrimaryButton"
+text = "Save note"
+
+[connection signal="value_committed" from="Layout/Body/Fields/Date" to="." method="view_date"]
+[connection signal="pressed" from="Layout/Body/Fields/DateActions/SetDate" to="." method="request_set_date"]
+[connection signal="pressed" from="Layout/Body/Fields/DateActions/Advance" to="." method="advance_date"]
+[connection signal="value_changed" from="Layout/Body/Fields/NoteTitle" to="." method="refresh_draft"]
+[connection signal="pressed" from="Layout/SaveNote" to="." method="request_save_note"]

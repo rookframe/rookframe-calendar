@@ -1,0 +1,25 @@
+[gd_resource type="Translation" format=3]
+
+[resource]
+locale = "de"
+messages = {
+[&"", &"Calendar"]: [&"Kalender"],
+[&"", &"World date not set"]: [&"Weltdatum nicht festgelegt"],
+[&"", &"View date"]: [&"Datum anzeigen"],
+[&"", &"Gregorian calendar · YYYY-MM-DD"]: [&"Gregorianischer Kalender · JJJJ-MM-TT"],
+[&"", &"Note title"]: [&"Titel der Notiz"],
+[&"", &"Note"]: [&"Notiz"],
+[&"", &"Write a note for this date…"]: [&"Notiz für dieses Datum schreiben…"],
+[&"", &"Set world date"]: [&"Weltdatum festlegen"],
+[&"", &"Advance one day"]: [&"Einen Tag weiter"],
+[&"", &"Dated notes"]: [&"Datierte Notizen"],
+[&"", &"Save note"]: [&"Notiz speichern"],
+[&"", &"Drafts stay here until you leave the World."]: [&"Entwürfe bleiben bis zum Verlassen der Welt erhalten."],
+[&"", &"Untitled note"]: [&"Unbenannte Notiz"],
+[&"", &"Draft"]: [&"Entwurf"],
+[&"", &"Enter a Gregorian date from 0001-01-01 to 9999-12-31."]: [&"Ein gregorianisches Datum von 0001-01-01 bis 9999-12-31 eingeben."],
+[&"", &"This is the last supported date."]: [&"Dies ist das letzte unterstützte Datum."],
+[&"", &"Viewing the next day. The World date is unchanged."]: [&"Nächster Tag. Das Weltdatum ist unverändert."],
+[&"", &"This World cannot save Calendar changes yet. Your draft is still here."]: [&"Diese Welt kann Kalenderänderungen noch nicht speichern. Dein Entwurf bleibt erhalten."],
+[&"", &"Add a title and a note before saving."]: [&"Vor dem Speichern Titel und Notiz eingeben."]
+}

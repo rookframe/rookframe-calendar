@@ -3,11 +3,11 @@
   "id": "aae579da-5392-4507-8eaa-0d918af58076",
   "kind": "optional",
   "name": "Calendar",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "summary": "Calendar",
   "sdk": {
     "edition": "2027",
-    "minimumRevision": 1
+    "minimumRevision": 4
   },
   "rookframeCompatibility": {
     "minimum": "0.1.0",
@@ -18,13 +18,32 @@
   },
   "presentations": [
     {
-      "id": "default",
+      "id": "desktop",
       "experiences": [
-        "desktop",
-        "tablet",
+        "desktop"
+      ],
+      "entryPoint": "ui/desktop.gd"
+    },
+    {
+      "id": "tablet",
+      "experiences": [
+        "tablet"
+      ],
+      "entryPoint": "ui/tablet.gd"
+    },
+    {
+      "id": "phone",
+      "experiences": [
         "phone"
       ],
-      "entryPoint": "ui/presentation.gd"
+      "entryPoint": "ui/phone.gd"
+    }
+  ],
+  "translations": [
+    {
+      "locale": "de",
+      "domain": "default",
+      "path": "i18n/de.tres"
     }
   ]
 }
