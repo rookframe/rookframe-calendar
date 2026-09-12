@@ -6,7 +6,7 @@ World date changes and dated notes are added in later slices. The example uses
 one Gregorian calendar; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Initial Package version: `0.1.1`. SDK Edition: `2027`, minimum revision `1`.
+Initial Package version: `0.2.0`. SDK Edition: `2027`, minimum revision `1`.
 
 ## Clean clone
 
@@ -23,7 +23,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /p
 python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.1.1** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.2.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `238339d390ec01873585c002917c164948a0578d`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
@@ -54,3 +54,25 @@ passes ordinary production admission before execution.
 See the [SDK authoring guide](https://github.com/rookframe/rookframe-sdk) and
 [UI Kit component API](https://github.com/rookframe/rookframe-ui-kit/blob/238339d390ec01873585c002917c164948a0578d/docs/public-components.md).
 The RFG-225 application changes are required for the initial Rail-to-window path.
+
+## How the integration is authored
+
+`ui/presentation.gd` extends the generated SDK Presentation base. Rookframe binds
+its typed `sdk` automatically before `compose()`:
+
+```gdscript
+const CALENDAR_WINDOW_BUTTON: SDK.WindowButton = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window_button.tres")
+
+func compose() -> void:
+    var rail: SDK.Rail = sdk.rails.left
+    rail.push(CALENDAR_WINDOW_BUTTON)
+```
+
+Open `ui/window_button.tres` in Godot's Inspector. Its `button_scene` points to
+`ui/calendar_button.tscn`; its typed `window` target points to `ui/window.tscn`.
+Edit the button's appearance in its scene and the Calendar content in the window
+scene. The SDK owns the standard opening action, native instantiation, mounting,
+reopening and cleanup. There is no Package-written signal connection, host
+adapter, string-based mount call or rejected-control disposal.
+
+Paths in this section are beneath `rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/`.
