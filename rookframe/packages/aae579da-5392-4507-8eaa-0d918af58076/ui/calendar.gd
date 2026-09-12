@@ -1,16 +1,26 @@
 extends "res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/window.gd"
 
 const GregorianDate = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/gregorian_date.gd")
+const CalendarData = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_data.gd")
+const CalendarNote = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_note.gd")
 const TextField = preload("res://rookframe/ui/components/forms/text_field.gd")
 const TextArea = preload("res://rookframe/ui/components/forms/text_area.gd")
-const StructuredRow = preload("res://rookframe/ui/components/data/structured_row.gd")
 
 @onready var date_field: TextField = get_node("Layout/Body/Fields/Date")
 @onready var note_title: TextField = get_node("Layout/Body/Fields/NoteTitle")
 @onready var note_body: TextArea = get_node("Layout/Body/Fields/NoteBody")
-@onready var draft_row: StructuredRow = get_node("Layout/Body/Fields/Draft")
+@onready var draft_row: Label = get_node("Layout/Body/Fields/Draft/Copy/Title")
+@onready var draft_detail: Label = get_node("Layout/Body/Fields/Draft/Copy/Detail")
+@onready var draft_status: Label = get_node("Layout/Body/Fields/Draft/Copy/Status")
+@onready var saved_note: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Title")
+@onready var saved_detail: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Detail")
+@onready var saved_status: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Status")
+@onready var saved_body: Label = get_node("Layout/Body/Fields/SavedBody")
+@onready var note_count: Label = get_node("Layout/Body/Fields/NoteCount")
 @onready var status: Label = get_node("Layout/Status")
 var viewed_date: GregorianDate = GregorianDate.new()
+var selected_note_id: int = 0
+var editing_note_id: int = 0
 
 func ready() -> void:
 	get_node("Layout/Header").text = translated("Calendar")
@@ -21,51 +31,211 @@ func ready() -> void:
 	note_body.label_text = translated("Note")
 	note_body.placeholder = translated("Write a note for this date…")
 	get_node("Layout/Body/Fields/DateActions/SetDate").text = translated("Set world date")
-	get_node("Layout/Body/Fields/DateActions/Advance").text = translated("Advance one day")
-	get_node("Layout/Body/Fields/NotesHeading").text = translated("Dated notes")
+	get_node("Layout/Body/Fields/DateActions/Advance").text = translated("Advance World one day")
+	get_node("Layout/Body/Fields/NotesHeading").text = translated("Notes for selected date")
 	get_node("Layout/SaveNote").text = translated("Save note")
-	status.text = translated("Drafts stay here until you leave the World.")
 	date_field.value = viewed_date.iso()
+	var calendar: CalendarData = read_calendar()
+	if calendar != null:
+		if calendar.initialized:
+			viewed_date.read_iso(calendar.date.iso())
+			date_field.value = viewed_date.iso()
+			status.text = translated("Changes are saved to this World. Unsaved drafts end when you leave.")
+		else:
+			status.text = translated("Set an explicit starting World date before saving notes.")
+		refresh_calendar(calendar)
 	refresh_draft("")
+	show_notes()
 
 func translated(message: String) -> String:
 	if sdk == null:
 		return message
 	return sdk.translations.text(message)
 
+func read_calendar() -> CalendarData:
+	if sdk == null:
+		status.text = translated("Open Calendar in a Rookframe World to read and save its data.")
+		return null
+	var result: SDK.DataResult = sdk.world_data.read()
+	if not result.ok:
+		status.text = result.message
+		return null
+	var calendar: CalendarData = CalendarData.new()
+	if not calendar.read(result.value):
+		status.text = translated("This Calendar release cannot interpret the retained data. No changes were saved.")
+		return null
+	return calendar
+
+func refresh_calendar(calendar: CalendarData) -> void:
+	get_node("Layout/WorldDate").text = translated("World date: ") + calendar.date.iso() if calendar.initialized else translated("World date not set")
+	var matching: Array[CalendarNote] = calendar.notes_for(viewed_date.iso())
+	var selected: CalendarNote = null
+	var index: int = 0
+	for note in matching:
+		index += 1
+		if note.id == selected_note_id:
+			selected = note
+			break
+	if selected == null and not matching.is_empty():
+		selected = matching[0]
+		index = 1
+	selected_note_id = selected.id if selected != null else 0
+	saved_note.text = selected.title if selected != null else translated("No notes for this date")
+	saved_detail.text = viewed_date.iso()
+	saved_status.text = translated("Saved") if selected != null else ""
+	saved_body.text = selected.body if selected != null else ""
+	note_count.text = "%d / %d" % [index if selected != null else 0, matching.size()]
+	var context: SDK.WorldContext = sdk.context()
+	var can_edit: bool = context.ok and context.is_gm
+	get_node("Layout/Body/Fields/DateActions/SetDate").disabled = not can_edit
+	get_node("Layout/Body/Fields/DateActions/Advance").disabled = not can_edit or not calendar.initialized
+	get_node("Layout/SaveNote").disabled = not can_edit or not calendar.initialized
+	get_node("Layout/Body/Fields/NoteActions/New").disabled = not can_edit or not calendar.initialized
+	get_node("Layout/Body/Fields/NoteActions/Edit").disabled = not can_edit or selected == null
+	get_node("Layout/Body/Fields/NoteActions/Delete").disabled = not can_edit or selected == null
+	get_node("Layout/Body/Fields/NoteNavigation/Previous").disabled = index <= 1
+	get_node("Layout/Body/Fields/NoteNavigation/Next").disabled = index >= matching.size()
+
 func view_date(value: String) -> void:
 	if not viewed_date.read_iso(value):
 		date_field.error_text = translated("Enter a Gregorian date from 0001-01-01 to 9999-12-31.")
 		return
 	date_field.error_text = ""
+	selected_note_id = 0
+	var calendar: CalendarData = read_calendar()
+	if calendar != null:
+		refresh_calendar(calendar)
 	refresh_draft("")
 
 func advance_date() -> void:
-	if not viewed_date.read_iso(date_field.value):
-		view_date(date_field.value)
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
 		return
-	if not viewed_date.advance_day():
-		date_field.error_text = translated("This is the last supported date.")
+	if not calendar.advance_day():
+		status.text = translated("Set a starting date, or choose a date before 9999-12-31.")
 		return
-	date_field.value = viewed_date.iso()
-	date_field.error_text = ""
-	refresh_draft("")
-	status.text = translated("Viewing the next day. The World date is unchanged.")
+	if commit_calendar(calendar):
+		viewed_date.read_iso(calendar.date.iso())
+		date_field.value = viewed_date.iso()
+		refresh_calendar(calendar)
+		refresh_draft("")
 
 func refresh_draft(_value: String) -> void:
-	draft_row.title = note_title.value if not note_title.value.is_empty() else translated("Untitled note")
-	draft_row.detail = viewed_date.iso()
-	draft_row.status_text = translated("Draft")
+	draft_row.text = note_title.value if not note_title.value.is_empty() else translated("Untitled note")
+	draft_detail.text = viewed_date.iso()
+	draft_status.text = translated("Editing saved note") if editing_note_id != 0 else translated("New note draft")
 
 func request_set_date() -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
+		return
+	if not calendar.set_date(date_field.value):
+		view_date(date_field.value)
+		return
+	if commit_calendar(calendar):
+		viewed_date.read_iso(calendar.date.iso())
+		refresh_calendar(calendar)
+		refresh_draft("")
+
+func request_save_note() -> void:
 	if not viewed_date.read_iso(date_field.value):
 		view_date(date_field.value)
 		return
-	status.text = translated("This World cannot save Calendar changes yet. Your draft is still here.")
-
-func request_save_note() -> void:
-	if note_title.value.strip_edges().is_empty() or note_body.value.strip_edges().is_empty():
-		note_body.error_text = translated("Add a title and a note before saving.")
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
+		return
+	var id: int = editing_note_id
+	if id == 0:
+		id = calendar.create_note(viewed_date.iso(), note_title.value, note_body.value)
+	elif not calendar.update_note(id, viewed_date.iso(), note_title.value, note_body.value):
+		id = 0
+	if id == 0:
+		note_body.error_text = translated("Set the World date and add a valid title and note before saving.")
 		return
 	note_body.error_text = ""
-	status.text = translated("This World cannot save Calendar changes yet. Your draft is still here.")
+	if commit_calendar(calendar):
+		editing_note_id = id
+		selected_note_id = id
+		refresh_calendar(calendar)
+		refresh_draft("")
+		show_notes()
+
+func commit_calendar(calendar: CalendarData) -> bool:
+	var result: SDK.OperationResult = sdk.world_data.replace(calendar.to_value())
+	if not result.ok:
+		status.text = result.message
+		return false
+	# Observe the accepted value through a fresh public query.
+	var fresh: CalendarData = read_calendar()
+	if fresh == null:
+		return false
+	refresh_calendar(fresh)
+	status.text = translated("Saved to this World.")
+	return true
+
+func previous_note() -> void:
+	navigate_note(-1)
+
+func next_note() -> void:
+	navigate_note(1)
+
+func navigate_note(direction: int) -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
+		return
+	var matching: Array[CalendarNote] = calendar.notes_for(viewed_date.iso())
+	for index in range(matching.size()):
+		if matching[index].id == selected_note_id:
+			var next_index: int = index + direction
+			if next_index >= 0 and next_index < matching.size():
+				selected_note_id = matching[next_index].id
+			break
+	refresh_calendar(calendar)
+
+func edit_note() -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
+		return
+	var note: CalendarNote = calendar.note_by_id(selected_note_id)
+	if note != null:
+		editing_note_id = note.id
+		note_title.value = note.title
+		note_body.value = note.body
+		refresh_draft("")
+		show_editor(true)
+
+func new_note() -> void:
+	editing_note_id = 0
+	note_title.value = ""
+	note_body.value = ""
+	note_body.error_text = ""
+	refresh_draft("")
+	show_editor(true)
+
+func delete_note() -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null or not calendar.delete_note(selected_note_id):
+		return
+	var removed_id: int = selected_note_id
+	if commit_calendar(calendar):
+		if editing_note_id == removed_id:
+			new_note()
+		selected_note_id = 0
+		refresh_calendar(calendar)
+
+func show_notes() -> void:
+	show_editor(false)
+
+func show_editor(editing: bool) -> void:
+	get_node("Layout/Body/Fields/DateActions").visible = not editing
+	get_node("Layout/Body/Fields/NotesHeading").visible = not editing
+	get_node("Layout/Body/Fields/SavedNote").visible = not editing
+	saved_body.visible = not editing
+	note_count.visible = not editing
+	get_node("Layout/Body/Fields/NoteNavigation").visible = not editing
+	get_node("Layout/Body/Fields/NoteActions").visible = not editing
+	get_node("Layout/Body/Fields/Draft").visible = editing
+	note_title.visible = editing
+	note_body.visible = editing
+	get_node("Layout/BackToNotes").visible = editing
+	get_node("Layout/SaveNote").visible = editing

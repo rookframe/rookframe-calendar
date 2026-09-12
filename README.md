@@ -1,12 +1,12 @@
 # Calendar
 
-An ordinary optional Rookframe Package, developed throughout Project 02. This
-slice opens an authored Gregorian date view and dated-note editor from the left
-Rail. World date and note persistence are connected in the domain-data slice. The example uses
+An ordinary optional Rookframe Package, developed throughout Project 02. It
+opens an authored Gregorian date view and dated-note editor from the left Rail.
+The GM sets or advances the saved World date and maintains dated notes. The example uses
 one Gregorian calendar; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.3.0`. SDK Edition: `2027`, minimum revision `4`.
+Package version: `0.4.0`. SDK Edition: `2027`, minimum revision `5`.
 
 ## Clean clone
 
@@ -23,7 +23,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /p
 python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.3.0** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.4.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `238339d390ec01873585c002917c164948a0578d`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
@@ -52,7 +52,7 @@ passes ordinary production admission before execution.
 
 See the [SDK authoring guide](https://github.com/rookframe/rookframe-sdk) and
 [UI Kit component API](https://github.com/rookframe/rookframe-ui-kit/blob/238339d390ec01873585c002917c164948a0578d/docs/public-components.md).
-The RFG-226 application changes are required for these Edition revision 4 APIs.
+The RFG-227 application changes are required for these Edition revision 5 APIs.
 
 ## How the integration is authored
 
@@ -78,12 +78,44 @@ Paths in this section are beneath `rookframe/packages/aae579da-5392-4507-8eaa-0d
 
 ## Date and note workflow
 
-View ISO Gregorian dates from 0001-01-01 to 9999-12-31, including leap years.
-Advance one day navigates the date view. Enter a note title/body; the dated draft
-row follows the selected date. Set World Date and Save Note currently report that
-authoritative changes are not connected. They never claim to save. RFG-227
-connects these actions to Rookframe-owned data; no Package persistent date/notes
-model exists here.
+The supported range is **0001-01-01 through 9999-12-31**, using the proleptic
+Gregorian calendar and canonical `YYYY-MM-DD` spelling. A leap year is divisible
+by 4, except century years must also be divisible by 400. There are no time zones,
+real-world scheduling rules, recurrence, reminders or external accounts.
+
+A new World has no Calendar data until its GM enters a valid date and explicitly
+presses **Set world date**. **Advance one day** changes the saved World date,
+including month/year/leap-day boundaries. The maximum date cannot advance.
+Changing **View date** only browses notes and changes the date for a new draft.
+Invalid input leaves the committed state unchanged.
+
+Enter a title and body and press **Save note** to create a dated note. Browse the
+selected date with **Previous note** / **Next note**, choose **Edit note** to load
+that note into the draft, save the edit, or choose **Delete note**. **New note**
+explicitly starts a new draft. Accepted changes refresh from the public SDK and
+survive leave/reopen and host-owned Copy/export/recovery. Failed saves never show
+success; a durable failure ends the World so reopening restores its prior save.
+
+The canonical value belongs to Rookframe's automatically scoped Package World
+Data Handle. Calendar stores pure values (`schema`, ISO World date, notes and next
+note ID), so retaining it never requires Calendar scripts. `CalendarData`,
+`CalendarNote`, and `GregorianDate` are temporary typed helpers, acquired afresh for
+each operation; only UI selection and an unfinished draft stay in the window.
+No copied Actor/Rook records, calendar database, host calendar schema, synchronized
+Node tree or additional replication system exists. A release that cannot interpret
+retained values reports that state without rewriting them. GM access comes from
+the host context, never an identity or flag supplied by Calendar.
+
+Run the focused domain checks (they are excluded from Package exports):
+
+```sh
+python3 tests/run_domain_tests.py --godot /path/to/godot
+```
+
+They cover Gregorian boundaries, explicit initialization, invalid/range input,
+note creation/edit/deletion, dated browsing and interpreting a newly supplied copy
+of the saved pure value. The host's focused SDK/store tests cover authorization,
+real codec round-trips, failed durable saves, retention and recovery.
 
 Desktop, tablet and phone Presentations register the same authored window scene,
 so an unfinished note and navigation state survive switching, closing and

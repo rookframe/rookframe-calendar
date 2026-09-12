@@ -1,13 +1,15 @@
 extends RefCounted
 
-## Temporary Gregorian calculation helper. This is a viewed date, never World data.
+## Temporary Gregorian calculation helper. Years 0001–9999; no independent persistence.
 var year: int = 1
 var month: int = 1
 var day: int = 1
 
 func read_iso(value: String) -> bool:
+	if value.length() != 10:
+		return false
 	var parts: PackedStringArray = value.split("-")
-	if parts.size() != 3:
+	if parts.size() != 3 or parts[0].length() != 4 or parts[1].length() != 2 or parts[2].length() != 2:
 		return false
 	if not parts[0].is_valid_int() or not parts[1].is_valid_int() or not parts[2].is_valid_int():
 		return false
@@ -17,6 +19,8 @@ func read_iso(value: String) -> bool:
 	if next_year < 1 or next_year > 9999 or next_month < 1 or next_month > 12:
 		return false
 	if next_day < 1 or next_day > days_in_month(next_year, next_month):
+		return false
+	if "%04d-%02d-%02d" % [next_year, next_month, next_day] != value:
 		return false
 	year = next_year
 	month = next_month

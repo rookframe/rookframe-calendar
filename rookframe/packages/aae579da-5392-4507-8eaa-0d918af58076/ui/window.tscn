@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Theme" path="res://rookframe/ui/theme/rookframe_theme.tres" id="theme"]
 [ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/calendar.gd" id="script"]
 [ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_field.tscn" id="field"]
 [ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_area.tscn" id="area"]
-[ext_resource type="PackedScene" path="res://rookframe/ui/components/data/structured_row.tscn" id="row"]
 
 [node name="Calendar" type="Control"]
 layout_mode = 3
@@ -41,6 +40,7 @@ text = "World date not set"
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
 follow_focus = true
 
 [node name="Fields" type="VBoxContainer" parent="Layout/Body"]
@@ -75,11 +75,98 @@ layout_mode = 2
 theme_type_variation = &"RookframeHeading"
 text = "Dated notes"
 
-[node name="Draft" parent="Layout/Body/Fields" instance=ExtResource("row")]
+[node name="SavedNote" type="PanelContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
-title = "Untitled note"
-detail = "0001-01-01"
-status_text = "Draft"
+theme_type_variation = &"RookframeStructuredRow"
+
+[node name="Copy" type="VBoxContainer" parent="Layout/Body/Fields/SavedNote"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Layout/Body/Fields/SavedNote/Copy"]
+layout_mode = 2
+text = "No notes for this date"
+autowrap_mode = 2
+
+[node name="Detail" type="Label" parent="Layout/Body/Fields/SavedNote/Copy"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "0001-01-01"
+
+[node name="Status" type="Label" parent="Layout/Body/Fields/SavedNote/Copy"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+
+[node name="SavedBody" type="Label" parent="Layout/Body/Fields"]
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="NoteCount" type="Label" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "0 / 0"
+
+[node name="NoteNavigation" type="HBoxContainer" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Previous" type="Button" parent="Layout/Body/Fields/NoteNavigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Previous note"
+
+[node name="Next" type="Button" parent="Layout/Body/Fields/NoteNavigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Next note"
+
+[node name="NoteActions" type="VBoxContainer" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Edit" type="Button" parent="Layout/Body/Fields/NoteActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeSecondaryButton"
+text = "Edit selected note"
+
+[node name="Delete" type="Button" parent="Layout/Body/Fields/NoteActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeDangerButton"
+text = "Delete selected note"
+
+[node name="New" type="Button" parent="Layout/Body/Fields/NoteActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "New note / clear draft"
+
+[node name="Draft" type="PanelContainer" parent="Layout/Body/Fields"]
+layout_mode = 2
+theme_type_variation = &"RookframeStructuredRow"
+
+[node name="Copy" type="VBoxContainer" parent="Layout/Body/Fields/Draft"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="Layout/Body/Fields/Draft/Copy"]
+layout_mode = 2
+text = "Untitled note"
+autowrap_mode = 2
+
+[node name="Detail" type="Label" parent="Layout/Body/Fields/Draft/Copy"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "0001-01-01"
+
+[node name="Status" type="Label" parent="Layout/Body/Fields/Draft/Copy"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
 
 [node name="NoteTitle" parent="Layout/Body/Fields" instance=ExtResource("field")]
 layout_mode = 2
@@ -96,6 +183,12 @@ theme_type_variation = &"RookframeMeta"
 text = "Drafts stay here until you leave the World."
 autowrap_mode = 2
 
+[node name="BackToNotes" type="Button" parent="Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Back to notes"
+
 [node name="SaveNote" type="Button" parent="Layout"]
 layout_mode = 2
 custom_minimum_size = Vector2(44, 44)
@@ -107,3 +200,15 @@ text = "Save note"
 [connection signal="pressed" from="Layout/Body/Fields/DateActions/Advance" to="." method="advance_date"]
 [connection signal="value_changed" from="Layout/Body/Fields/NoteTitle" to="." method="refresh_draft"]
 [connection signal="pressed" from="Layout/SaveNote" to="." method="request_save_note"]
+
+[connection signal="pressed" from="Layout/Body/Fields/NoteNavigation/Previous" to="." method="previous_note"]
+
+[connection signal="pressed" from="Layout/Body/Fields/NoteNavigation/Next" to="." method="next_note"]
+
+[connection signal="pressed" from="Layout/Body/Fields/NoteActions/Edit" to="." method="edit_note"]
+
+[connection signal="pressed" from="Layout/Body/Fields/NoteActions/Delete" to="." method="delete_note"]
+
+[connection signal="pressed" from="Layout/Body/Fields/NoteActions/New" to="." method="new_note"]
+
+[connection signal="pressed" from="Layout/BackToNotes" to="." method="show_notes"]
