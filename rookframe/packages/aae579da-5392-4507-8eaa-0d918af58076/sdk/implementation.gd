@@ -9,7 +9,8 @@ var sdk: SDK
 func _ready() -> void:
 	if has_meta("rookframe_sdk"):
 		sdk = SDK.new(get_meta("rookframe_sdk"))
-		start()
+		if not has_meta("rookframe_cleanup"):
+			start()
 
 
 ## Override for Package setup. Godot owns the surrounding Node lifecycle.
