@@ -4,4 +4,3 @@ extends "res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/setti
 @export var choices: PackedStringArray = []
 @export var minimum_length: int = 0
 @export var maximum_length: int = 4096
-

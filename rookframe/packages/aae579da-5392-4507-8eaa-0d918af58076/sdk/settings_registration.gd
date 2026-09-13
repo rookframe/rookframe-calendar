@@ -3,4 +3,3 @@ extends Resource
 const Setting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/setting.gd")
 @export var user: Array[Setting] = []
 @export var world: Array[Setting] = []
-

@@ -3,4 +3,3 @@ extends "res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/setti
 @export var default_value: int = 0
 @export var minimum: int = -1000000
 @export var maximum: int = 1000000
-
