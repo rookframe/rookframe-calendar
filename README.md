@@ -6,7 +6,15 @@ The GM sets or advances the saved World date and maintains dated notes. The exam
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.8.1`. SDK Edition: `2029`, minimum revision `1`.
+Package version: `0.9.0`. SDK Edition: `2029`, minimum revision `1`.
+
+![Setting and advancing the World date](docs/screenshots/calendar-date.png)
+
+![Saved dated notes in the Calendar window](docs/screenshots/calendar-notes.png)
+
+These are native Rookframe desktop captures of Calendar 0.9.0, using the
+controlled System Extension for the tabletop. Calendar owns the date-and-notes
+window; the host owns the surrounding workspace and durable World save.
 
 ## Clean clone
 
@@ -15,15 +23,15 @@ the **.NET 8 runtime**. No Rookframe application checkout or private host
 assemblies are required. The gd-plug bootstrap and its license are included.
 
 ```sh
-git clone https://github.com/rookframe/rookframe-calendar.git
+git clone --branch v0.9.0 https://github.com/rookframe/rookframe-calendar.git
 cd rookframe-calendar
 /path/to/godot --headless --path . --script plug.gd install
 python3 addons/rookframe_sdk/rookframe_authoring.py facade --project .
 python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /path/to/godot
-python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
+python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --output build/Calendar-0.9.0.rookpackage
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.8.0** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.9.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `238339d390ec01873585c002917c164948a0578d`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
@@ -35,13 +43,18 @@ entering the editor, and Project → Tools offers Package Check and Build. Open
 `rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window.tscn` to edit or
 run the normal authored scene. The UI uses the separately installed public Theme, TextField and TextArea components, with authored summary panels. Rookframe owns the Rail slot and managed window chrome.
 
-The initial export configuration contains only `desktop` for macOS. On Windows
-or Linux select the native platform in the desktop export preset. Add other
-Rookframe profile presets only when intended; keep textual scripts and exclude
-authoring dependencies/registries. The build command exports every configured
-profile, verifies prepared contents, and writes one complete `.rookpackage` to
-`build/`. A new build receives a fresh UUID; reinstallation uses the existing
-archive unchanged. No publication or account is needed to build locally.
+Calendar has no OS dependency. The same published `.rookpackage` supplies its
+shared code and resources on iOS, Android, Linux, macOS and Windows. Its phone,
+tablet and desktop Presentations select the appropriate layout; Rookframe uses
+the documented Presentation fallback when a layout is absent. Use a Rookframe
+build containing the RFG-231 portability fix.
+
+The immutable v0.9.0 release was produced by its pinned SDK, which used the legacy
+`desktop` archive-member label. That label does not restrict where Calendar can
+run. Reinstall the published archive unchanged. SDK 0.9.2 and newer author one
+shared `package` artifact, with all required texture formats included automatically.
+A new build receives a fresh UUID. No publication or account is needed to build
+locally.
 
 In Rookframe, create a World with a controlled System Extension. Open Main Menu → Installed Packages → Import Local Archive, choose
 the build. In World Details → Packages, include Calendar. Open the World and click Calendar's document
@@ -51,7 +64,7 @@ passes ordinary production admission before execution.
 
 See the [SDK authoring guide](https://github.com/rookframe/rookframe-sdk) and
 [UI Kit component API](https://github.com/rookframe/rookframe-ui-kit/blob/238339d390ec01873585c002917c164948a0578d/docs/public-components.md).
-The RFG-227 application changes are required for these Edition revision 5 APIs.
+Calendar 0.9.0 is checked against Rookframe 0.1.0 with SDK Edition 2029 revision 1 support.
 
 ## How the integration is authored
 
@@ -167,3 +180,41 @@ provider, account or sign-in. Calendar remains fully useful offline.
 exact updates, disabled releases, matching repair and deliberate data removal.
 Calendar 0.8.1 preserves the 0.8.0 pure date/notes representation and SDK 0.8.0
 contract. Manager changes require Rookframe's RFG-230 release.
+
+
+## Catalogue release 0.9.0
+
+The public Manifest for this exact release is
+[rookframe.json](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.0/rookframe.json).
+The same release contains [Calendar-0.9.0.rookpackage](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.0/Calendar-0.9.0.rookpackage).
+The archive and Manifest are one checked build; retries reuse them and never
+replace a published version. The Package ID remains unchanged. The upgrade
+retains the previous pure date/notes representation and existing calendar settings.
+
+Install from this Manifest link in Manager or, after its submission is approved,
+find Calendar 0.9.0 in Browse Catalogue and choose Install this release. Include
+it in a World with exactly one System Extension, open the World, and select its
+Calendar rail entry. Local archive import works independently of Catalogue.
+A listing is metadata and does not certify or authenticate Package code.
+
+Maintainers publish from a clean checkout of the exact source commit, with the
+pinned dependencies installed, using the SDK's separate deliberate command:
+
+```sh
+python3 addons/rookframe_sdk/rookframe_authoring.py publish-github \
+  --project . --archive build/Calendar-0.9.0.rookpackage \
+  --repo rookframe/rookframe-calendar --tag v0.9.0 --commit FULL_SOURCE_COMMIT
+# Review the printed exact build/destination, then repeat with --confirm.
+python3 addons/rookframe_sdk/rookframe_authoring.py catalogue propose \
+  --manifest https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.0/rookframe.json \
+  --output /private/path/calendar-proposal.json
+# Review the proposal, then submit explicitly:
+python3 addons/rookframe_sdk/rookframe_authoring.py catalogue submit \
+  --proposal /private/path/calendar-proposal.json --confirm
+```
+
+Publisher registration, email confirmation and sign-in are documented in the
+[SDK publication guide](https://github.com/rookframe/rookframe-sdk/blob/v0.9.0/PUBLICATION.md).
+They are only needed for the Catalogue record. Building, testing and direct
+installation need no Publisher account. The existing custom calendar/settings
+features remain part of Calendar; this release introduces no new date model.
