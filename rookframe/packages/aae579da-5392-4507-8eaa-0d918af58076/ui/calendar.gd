@@ -6,7 +6,7 @@ const CalendarData = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0
 const CalendarNote = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_note.gd")
 const DATE_FORMAT: SDK.TextSetting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/date_format.tres")
 const CALENDAR_TITLE: SDK.TextSetting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_title.tres")
-const MONTHS: Array[String] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+const CalendarRules = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_rules.gd")
 const TextField = preload("res://rookframe/ui/components/forms/text_field.gd")
 const TextArea = preload("res://rookframe/ui/components/forms/text_area.gd")
 
@@ -30,19 +30,19 @@ func ready() -> void:
 	get_node("Layout/Header").text = translated("Calendar")
 	get_node("Layout/WorldDate").text = translated("World date not set")
 	date_field.label_text = translated("View date")
-	date_field.help_text = translated("Gregorian calendar · YYYY-MM-DD")
+	date_field.help_text = translated("Year-month-day · use the month and day numbers of this calendar")
 	note_title.label_text = translated("Note title")
 	note_body.label_text = translated("Note")
 	note_body.placeholder = translated("Write a note for this date…")
 	get_node("Layout/Body/Fields/DateActions/SetDate").text = translated("Set world date")
 	get_node("Layout/Body/Fields/DateActions/Advance").text = translated("Advance World one day")
 	get_node("Layout/SaveNote").text = translated("Save note")
-	date_field.value = viewed_date.iso()
+	date_field.value = rules().format_date(viewed_date)
 	var calendar: CalendarData = read_calendar()
 	if calendar != null:
 		if calendar.initialized:
 			viewed_date.read_iso(calendar.date.iso())
-			date_field.value = viewed_date.iso()
+			date_field.value = rules().format_date(viewed_date)
 			status.text = translated("Changes are saved to this World. Unsaved drafts end when you leave.")
 		else:
 			status.text = translated("Set an explicit starting World date before saving notes.")
@@ -99,8 +99,8 @@ func refresh_calendar(calendar: CalendarData) -> void:
 	get_node("Layout/Body/Fields/NoteNavigation/Next").disabled = index >= matching.size()
 
 func view_date(value: String) -> void:
-	if not viewed_date.read_iso(value):
-		date_field.error_text = translated("Enter a Gregorian date from 0001-01-01 to 9999-12-31.")
+	if not read_viewed_date(value):
+		date_field.error_text = translated("Enter a valid year-month-day in this calendar, for example 0001-01-01.")
 		return
 	date_field.error_text = ""
 	selected_note_id = 0
@@ -118,20 +118,21 @@ func advance_date() -> void:
 		return
 	if commit_calendar(calendar):
 		viewed_date.read_iso(calendar.date.iso())
-		date_field.value = viewed_date.iso()
+		date_field.value = rules().format_date(viewed_date)
 		refresh_calendar(calendar)
 		refresh_draft("")
 
 func refresh_draft(_value: String) -> void:
 	draft_row.text = note_title.value if not note_title.value.is_empty() else translated("Untitled note")
-	draft_detail.text = viewed_date.iso()
+	draft_detail.text = display_date(viewed_date)
 	draft_status.text = translated("Editing saved note") if editing_note_id != 0 else translated("New note draft")
 
 func request_set_date() -> void:
 	var calendar: CalendarData = read_calendar()
 	if calendar == null:
 		return
-	if not calendar.set_date(date_field.value):
+	var parsed: GregorianDate = rules().parse_date(date_field.value)
+	if parsed == null or not calendar.set_date(parsed.iso()):
 		view_date(date_field.value)
 		return
 	if commit_calendar(calendar):
@@ -140,7 +141,7 @@ func request_set_date() -> void:
 		refresh_draft("")
 
 func request_save_note() -> void:
-	if not viewed_date.read_iso(date_field.value):
+	if not read_viewed_date(date_field.value):
 		view_date(date_field.value)
 		return
 	var calendar: CalendarData = read_calendar()
@@ -250,11 +251,22 @@ func show_mode(mode: int) -> void:
 
 
 func settings_changed(_scope: SettingsScope.Kind) -> void:
+	date_field.value = rules().format_date(viewed_date)
+	date_field.error_text = ""
+	refresh_draft("")
 	var calendar: CalendarData = read_calendar()
 	if calendar != null:
 		refresh_calendar(calendar)
 
+func rules() -> CalendarRules:
+	var result: CalendarRules = CalendarRules.new()
+	if sdk != null:
+		result.read(sdk.settings.world)
+	return result
+
+func read_viewed_date(value: String) -> bool:
+	var parsed: GregorianDate = rules().parse_date(value)
+	return parsed != null and viewed_date.read_iso(parsed.iso())
+
 func display_date(date: GregorianDate) -> String:
-	if sdk != null and sdk.settings.user.text(DATE_FORMAT) == "Day month year":
-		return "%d %s %04d" % [date.day, MONTHS[date.month - 1], date.year]
-	return date.iso()
+	return rules().format_date(date, sdk != null and sdk.settings.user.text(DATE_FORMAT) == "Day month year")

@@ -1,12 +1,12 @@
 # Calendar
 
 An ordinary optional Rookframe Package, developed throughout Project 02. It
-opens an authored Gregorian date view and dated-note editor from the left Rail.
+opens an authored date view and dated-note editor from the left Rail.
 The GM sets or advances the saved World date and maintains dated notes. The example uses
-one Gregorian calendar; it requires no remote account.
+classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.5.0`. SDK Edition: `2027`, minimum revision `6`.
+Package version: `0.6.0`. SDK Edition: `2027`, minimum revision `7`.
 
 ## Clean clone
 
@@ -23,7 +23,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /p
 python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.5.0** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.6.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `238339d390ec01873585c002917c164948a0578d`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
@@ -127,20 +127,27 @@ The date helper is temporary typed calculation state, not authoritative data.
 German translations are declared as a normal Godot Translation and accessed
 through `sdk.translations`; the standalone scene keeps English source labels.
 
-## Package Settings
+## Calendar Settings
 
-Open the World menu → Package Settings. Calendar's **User Settings** chooses ISO
-or **Day month year** for displayed dates on this installation. Its separate
-**World Settings** changes the calendar title; only the current GM can save it.
-Whitespace-only titles reject. Each scope has its own Save and Reset controls,
-and accepted values update the running Calendar immediately. Date entry always
-uses ISO `YYYY-MM-DD`, regardless of display preference.
+Open **Game Menu → Package Settings → Calendar**. World Settings contains the
+Calendar title and a choice between classic Gregorian rules and a custom calendar.
+Custom calendars have 1–64 named months, each with 1–366 days, and 1–32 named
+weekdays. Month and weekday names must be distinct within their list. Weeks run
+continuously across month/year boundaries. Custom years repeat their month lengths
+without leap days; classic rules retain Gregorian leap years.
 
-The typed descriptors live in `logic/date_format.tres` and
-`logic/calendar_title.tres`. The Implementation supplies the typed registration
-and validator; the Calendar reads fresh SDK Settings snapshots on accepted
-changes. Title and display preference exist only in Rookframe Settings. Date
-and notes remain in Package World Data. Calendar uses the default exact-version
-settings conversion; its pure date/note value remains compatible between these
-releases. Calendar needs no custom form, restart-only option or configurable
-calendar rules.
+My Settings chooses numeric or named date display. Presentation is a separate
+section. Edits are staged until the containing scope's Save button succeeds.
+Only the World Authority GM can publish calendar rules.
+
+Changing rules relabels existing days instead of rewriting history. Day 1 of year 1
+is the common origin; retained Gregorian dates remain the canonical day identity
+in Package World Data, so every note stays attached to the same day. Numeric
+custom input uses year-month-day numbers in the selected calendar, for example
+`0001-02-03`; changing rules can change those labels and the displayed year.
+The supported day range remains Gregorian 0001-01-01 through 9999-12-31.
+Older Calendar releases can still read the retained dates and notes.
+
+The public SDK uses typed `TextListSetting`, `IntegerListSetting`, `TextList`,
+and `IntegerList` values; the custom view builds drafts through typed setters.
+This requires Edition 2027 revision 7 and SDK 0.6.0.

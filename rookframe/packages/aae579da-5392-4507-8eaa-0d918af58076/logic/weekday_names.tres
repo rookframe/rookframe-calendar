@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/text_list_setting.gd" id="1"]
+[resource]
+script = ExtResource("1")
+key = "weekday_names"
+title = "Days of the week"
+default_value = PackedStringArray("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+minimum_items = 1
+maximum_items = 32
+minimum_length = 1
+maximum_length = 40

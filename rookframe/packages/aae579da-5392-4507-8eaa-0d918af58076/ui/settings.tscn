@@ -1,0 +1,168 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/settings.gd" id="1"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_field.tscn" id="2"]
+[node name="CalendarSettings" type="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+script = ExtResource("1")
+[node name="World" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Title" parent="World" instance=ExtResource("2")]
+layout_mode = 2
+label_text = "Calendar title"
+[node name="TypeLabel" type="Label" parent="World"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+text = "CALENDAR RULES"
+[node name="Type" type="HBoxContainer" parent="World"]
+layout_mode = 2
+theme_override_constants/separation = 8
+[node name="Classic" type="Button" parent="World/Type"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"RookframeManagedControl"
+text = "Classic"
+[node name="Custom" type="Button" parent="World/Type"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"RookframeManagedControl"
+text = "Custom"
+[node name="Classic" type="Label" parent="World"]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "Twelve familiar months, seven days per week, and Gregorian leap years."
+autowrap_mode = 2
+[node name="History" type="Label" parent="World"]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "Changing calendar rules relabels existing days. The World date and every note stay attached to the same day. Both calendars begin on day 1 of year 1."
+autowrap_mode = 2
+[node name="Custom" type="VBoxContainer" parent="World"]
+layout_mode = 2
+theme_override_constants/separation = 20
+[node name="Summary" type="Label" parent="World/Custom"]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+autowrap_mode = 2
+[node name="Sections" type="HBoxContainer" parent="World/Custom"]
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+[node name="Months" type="Button" parent="World/Custom/Sections"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "Months & lengths"
+[node name="Week" type="Button" parent="World/Custom/Sections"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "Weekdays"
+[node name="Months" type="VBoxContainer" parent="World/Custom"]
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Count" type="HBoxContainer" parent="World/Custom/Months"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Label" type="Label" parent="World/Custom/Months/Count"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"RookframeBody"
+text = "Months in a year"
+autowrap_mode = 2
+[node name="Minus" type="Button" parent="World/Custom/Months/Count"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "−"
+accessibility_name = "Remove last month"
+[node name="Value" type="Label" parent="World/Custom/Months/Count"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+horizontal_alignment = 1
+[node name="Plus" type="Button" parent="World/Custom/Months/Count"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "+"
+accessibility_name = "Add month"
+[node name="Hint" type="Label" parent="World/Custom/Months"]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "Each month has its own length. Weeks continue across month and year boundaries. Custom years repeat these lengths without leap days."
+autowrap_mode = 2
+[node name="Rows" type="VBoxContainer" parent="World/Custom/Months"]
+layout_mode = 2
+theme_override_constants/separation = 20
+[node name="Week" type="VBoxContainer" parent="World/Custom"]
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Count" type="HBoxContainer" parent="World/Custom/Week"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Label" type="Label" parent="World/Custom/Week/Count"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"RookframeBody"
+text = "Days in a week"
+autowrap_mode = 2
+[node name="Minus" type="Button" parent="World/Custom/Week/Count"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "−"
+accessibility_name = "Remove last weekday"
+[node name="Value" type="Label" parent="World/Custom/Week/Count"]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+horizontal_alignment = 1
+[node name="Plus" type="Button" parent="World/Custom/Week/Count"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "+"
+accessibility_name = "Add weekday"
+[node name="Hint" type="Label" parent="World/Custom/Week"]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "Name the weekdays in order. The first day of year 1 uses the first weekday."
+autowrap_mode = 2
+[node name="Rows" type="VBoxContainer" parent="World/Custom/Week"]
+layout_mode = 2
+theme_override_constants/separation = 20
+[node name="User" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Label" type="Label" parent="User"]
+layout_mode = 2
+theme_type_variation = &"RookframeBody"
+text = "Choose how dates appear to you. Calendar rules are shared World Settings."
+autowrap_mode = 2
+[node name="Numeric" type="Button" parent="User"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "Year-month-day"
+[node name="Named" type="Button" parent="User"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_type_variation = &"RookframeManagedControl"
+text = "Weekday, day, month name, year"
+autowrap_mode = 2
+[connection signal="value_changed" from="World/Title" to="." method="title_changed"]
+[connection signal="pressed" from="World/Custom/Sections/Months" to="." method="show_months"]
+[connection signal="pressed" from="World/Custom/Sections/Week" to="." method="show_week"]
+[connection signal="pressed" from="World/Type/Classic" to="." method="classic"]
+[connection signal="pressed" from="World/Type/Custom" to="." method="custom"]
+[connection signal="pressed" from="User/Numeric" to="." method="numeric_format"]
+[connection signal="pressed" from="User/Named" to="." method="named_format"]
+[connection signal="pressed" from="World/Custom/Months/Count/Minus" to="." method="remove_month"]
+[connection signal="pressed" from="World/Custom/Months/Count/Plus" to="." method="add_month"]
+[connection signal="pressed" from="World/Custom/Week/Count/Minus" to="." method="remove_weekday"]
+[connection signal="pressed" from="World/Custom/Week/Count/Plus" to="." method="add_weekday"]

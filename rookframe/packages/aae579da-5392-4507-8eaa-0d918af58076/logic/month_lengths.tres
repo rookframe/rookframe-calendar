@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/integer_list_setting.gd" id="1"]
+[resource]
+script = ExtResource("1")
+key = "month_lengths"
+title = "Days in each month"
+default_value = PackedInt64Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+minimum_items = 1
+maximum_items = 64
+minimum = 1
+maximum = 366

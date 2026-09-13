@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/month_setting.gd" id="1"]
+[ext_resource type="PackedScene" path="res://rookframe/ui/components/forms/text_field.tscn" id="2"]
+[node name="MonthSetting" type="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("1")
+[node name="Row" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Name" parent="Row" instance=ExtResource("2")]
+layout_mode = 2
+size_flags_horizontal = 3
+[node name="Days" parent="Row" instance=ExtResource("2")]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+label_text = "Days"
+[node name="Weeks" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"RookframeMeta"
+autowrap_mode = 2
+[connection signal="value_changed" from="Row/Name" to="." method="name_changed"]
+[connection signal="value_changed" from="Row/Days" to="." method="length_changed"]

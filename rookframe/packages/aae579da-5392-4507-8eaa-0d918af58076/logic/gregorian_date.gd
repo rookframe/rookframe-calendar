@@ -50,3 +50,34 @@ func advance_day() -> bool:
 
 func iso() -> String:
 	return "%04d-%02d-%02d" % [year, month, day]
+
+## Stable day identity used by every calendar. Day zero is 0001-01-01.
+func day_index() -> int:
+	var prior: int = year - 1
+	var result: int = prior * 365 + int(prior / 4) - int(prior / 100) + int(prior / 400)
+	for earlier in range(1, month):
+		result += days_in_month(year, earlier)
+	return result + day - 1
+
+func read_day_index(index: int) -> bool:
+	if index < 0 or index > 3652058:
+		return false
+	var low: int = 1
+	var high: int = 9999
+	while low < high:
+		var middle: int = int((low + high + 1) / 2)
+		var prior: int = middle - 1
+		var start: int = prior * 365 + int(prior / 4) - int(prior / 100) + int(prior / 400)
+		if start <= index:
+			low = middle
+		else:
+			high = middle - 1
+	year = low
+	month = 1
+	day = 1
+	var remaining: int = index - day_index()
+	while remaining >= days_in_month(year, month):
+		remaining -= days_in_month(year, month)
+		month += 1
+	day = remaining + 1
+	return true
