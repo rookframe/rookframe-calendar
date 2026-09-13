@@ -24,12 +24,14 @@ custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"RookframeManagedControl"
+toggle_mode = true
 text = "Classic"
 [node name="Custom" type="Button" parent="World/Type"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"RookframeManagedControl"
+toggle_mode = true
 text = "Custom"
 [node name="Classic" type="Label" parent="World"]
 layout_mode = 2
@@ -56,11 +58,13 @@ theme_override_constants/v_separation = 8
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"RookframeManagedControl"
-text = "Months & lengths"
+toggle_mode = true
+text = "Months"
 [node name="Week" type="Button" parent="World/Custom/Sections"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"RookframeManagedControl"
+toggle_mode = true
 text = "Weekdays"
 [node name="Months" type="VBoxContainer" parent="World/Custom"]
 layout_mode = 2
@@ -148,11 +152,13 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 theme_type_variation = &"RookframeManagedControl"
+toggle_mode = true
 text = "Year-month-day"
 [node name="Named" type="Button" parent="User"]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 theme_type_variation = &"RookframeManagedControl"
+toggle_mode = true
 text = "Weekday, day, month name, year"
 autowrap_mode = 2
 [connection signal="value_changed" from="World/Title" to="." method="title_changed"]

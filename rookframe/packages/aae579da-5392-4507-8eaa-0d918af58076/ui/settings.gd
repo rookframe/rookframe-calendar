@@ -108,7 +108,7 @@ func months_changed() -> void:
 	var lengths: SDK.IntegerList = SDK.IntegerList.new()
 	for row in months:
 		names.append(row.month_name.value)
-		lengths.append(int(row.days.value))
+		lengths.append(row.length_value())
 	draft.set_text_list(Settings.MONTH_NAMES, names)
 	draft.set_integer_list(Settings.MONTH_LENGTHS, lengths)
 	refresh()
@@ -124,8 +124,8 @@ func refresh() -> void:
 	if scope != SettingsScope.Kind.WORLD:
 		return
 	var custom: bool = draft.text(Settings.CALENDAR_TYPE) == "Custom"
-	get_node("World/Type/Classic").theme_type_variation = "RookframeManagedControl" if custom else "RookframeManagedSelected"
-	get_node("World/Type/Custom").theme_type_variation = "RookframeManagedSelected" if custom else "RookframeManagedControl"
+	select_button("World/Type/Classic", "Classic", not custom)
+	select_button("World/Type/Custom", "Custom", custom)
 	refresh_count("Months", months.size(), 64)
 	refresh_count("Week", weekdays.size(), 32)
 	get_node("World/Custom").visible = custom
@@ -139,7 +139,7 @@ func refresh() -> void:
 func show_section(section: String) -> void:
 	for name in ["Months", "Week"]:
 		get_node("World/Custom/" + name).visible = section == name
-		get_node("World/Custom/Sections/" + name).theme_type_variation = "RookframeManagedSelected" if section == name else "RookframeManagedControl"
+		select_button("World/Custom/Sections/" + name, "Months" if name == "Months" else "Weekdays", section == name)
 
 func show_months() -> void:
 	show_section("Months")
@@ -161,8 +161,8 @@ func named_format() -> void:
 
 func refresh_format() -> void:
 	var numeric: bool = draft.text(Settings.DATE_FORMAT) == "ISO"
-	get_node("User/Numeric").theme_type_variation = "RookframeManagedSelected" if numeric else "RookframeManagedControl"
-	get_node("User/Named").theme_type_variation = "RookframeManagedControl" if numeric else "RookframeManagedSelected"
+	select_button("User/Numeric", "Year-month-day", numeric)
+	select_button("User/Named", "Weekday, day, month name, year", not numeric)
 
 func add_month() -> void:
 	month_count_changed(months.size() + 1)
@@ -180,3 +180,10 @@ func refresh_count(section: String, count: int, maximum: int) -> void:
 	get_node("World/Custom/" + section + "/Count/Value").text = str(count)
 	get_node("World/Custom/" + section + "/Count/Minus").disabled = count <= 1
 	get_node("World/Custom/" + section + "/Count/Plus").disabled = count >= maximum
+
+func select_button(path: String, label: String, selected: bool) -> void:
+	var button: Button = get_node(path)
+	button.button_pressed = selected
+	button.text = label + (" (selected)" if selected else "")
+	button.theme_type_variation = "RookframeManagedSelected" if selected else "RookframeManagedControl"
+	button.accessibility_name = button.text

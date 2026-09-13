@@ -13,8 +13,16 @@ func configure(title: String, length: int, number: int, days_per_week: int) -> v
 	week_length = days_per_week
 	refresh()
 
-func refresh() -> void:
+func length_value() -> int:
+	if days.value.length() > 3 or not days.value.is_valid_int():
+		return 0
 	var length: int = int(days.value)
+	return length if length >= 1 and length <= 366 else 0
+
+func refresh() -> void:
+	var length: int = length_value()
+	days.error_text = "Enter a whole number from 1 to 366." if length == 0 else ""
+	weeks.visible = length > 0
 	weeks.text = "%d full weeks + %d days" % [int(length / week_length), length % week_length]
 
 func name_changed(_value: String) -> void:

@@ -67,5 +67,20 @@ func _initialize() -> void:
 		var copy := Date.new()
 		assert(copy.read_day_index(date.day_index()))
 		assert(copy.iso() == boundary)
+	call_deferred("check_month_editor")
+
+func check_month_editor() -> void:
+	var row = load("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/month_setting.tscn").instantiate()
+	root.add_child(row)
+	row.configure("Dawn", 3, 1, 2)
+	for malformed in ["3.5", "3x0", "", "0", "-1", "367", "18446744073709551619"]:
+		row.days.value = malformed
+		row.length_changed(malformed)
+		assert(not row.days.error_text.is_empty(), "Month editor accepted malformed length: " + malformed)
+	for valid in ["1", "30", "366"]:
+		row.days.value = valid
+		row.length_changed(valid)
+		assert(row.days.error_text.is_empty(), "Month editor rejected valid length: " + valid)
+	row.free()
 	print("CALENDAR_DOMAIN PASS Gregorian boundaries / explicit start / note CRUD / retained interpretation")
 	quit()
