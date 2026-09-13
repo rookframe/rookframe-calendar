@@ -8,6 +8,14 @@ classic Gregorian or custom calendar rules; it requires no remote account.
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
 Package version: `0.9.0`. SDK Edition: `2029`, minimum revision `1`.
 
+![Setting and advancing the World date](docs/screenshots/calendar-date.png)
+
+![Saved dated notes in the Calendar window](docs/screenshots/calendar-notes.png)
+
+These are native Rookframe desktop captures of Calendar 0.9.0, using the
+controlled System Extension for the tabletop. Calendar owns the date-and-notes
+window; the host owns the surrounding workspace and durable World save.
+
 ## Clean clone
 
 Install Godot **4.7.2** with matching export templates, Git, Python **3.10+** and
@@ -15,12 +23,12 @@ the **.NET 8 runtime**. No Rookframe application checkout or private host
 assemblies are required. The gd-plug bootstrap and its license are included.
 
 ```sh
-git clone https://github.com/rookframe/rookframe-calendar.git
+git clone --branch v0.9.0 https://github.com/rookframe/rookframe-calendar.git
 cd rookframe-calendar
 /path/to/godot --headless --path . --script plug.gd install
 python3 addons/rookframe_sdk/rookframe_authoring.py facade --project .
 python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /path/to/godot
-python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
+python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --output build/Calendar-0.9.0.rookpackage
 ```
 
 The two dependencies in `plug.gd` are SDK **v0.9.0** and UI Kit
@@ -51,7 +59,7 @@ passes ordinary production admission before execution.
 
 See the [SDK authoring guide](https://github.com/rookframe/rookframe-sdk) and
 [UI Kit component API](https://github.com/rookframe/rookframe-ui-kit/blob/238339d390ec01873585c002917c164948a0578d/docs/public-components.md).
-The RFG-227 application changes are required for these Edition revision 5 APIs.
+Calendar 0.9.0 is checked against Rookframe 0.1.0 with SDK Edition 2029 revision 1 support.
 
 ## How the integration is authored
 
