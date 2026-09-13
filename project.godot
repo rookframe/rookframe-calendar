@@ -1,8 +1,27 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
+
 [application]
+
 config/name="Calendar"
 run/main_scene="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window.tscn"
+config/features=PackedStringArray("4.7")
+
+[dotnet]
+
+project/assembly_name="Calendar"
+
 [editor_plugins]
+
 enabled=PackedStringArray("res://addons/rookframe_sdk/plugin.cfg")
+
 [rendering]
+
 renderer/rendering_method="gl_compatibility"
