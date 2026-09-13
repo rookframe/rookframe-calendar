@@ -125,7 +125,8 @@ text = "Next note"
 
 [node name="NoteActions" type="HFlowContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
 
 [node name="Edit" type="Button" parent="Layout/Body/Fields/NoteActions"]
 layout_mode = 2
