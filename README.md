@@ -6,7 +6,7 @@ The GM sets or advances the saved World date and maintains dated notes. The exam
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.8.0`. SDK Edition: `2029`, minimum revision `1`.
+Package version: `0.8.1`. SDK Edition: `2029`, minimum revision `1`.
 
 ## Clean clone
 
@@ -43,9 +43,8 @@ profile, verifies prepared contents, and writes one complete `.rookpackage` to
 `build/`. A new build receives a fresh UUID; reinstallation uses the existing
 archive unchanged. No publication or account is needed to build locally.
 
-In Rookframe, create a World with a controlled System Extension. Open World
-Details → Packages → Install or Update Packages → Import Local Archive, choose
-the build, then include Calendar. Open the World and click Calendar's document
+In Rookframe, create a World with a controlled System Extension. Open Main Menu → Installed Packages → Import Local Archive, choose
+the build. In World Details → Packages, include Calendar. Open the World and click Calendar's document
 icon in the left Rail. Its initial scene opens in the normal managed window,
 with dock, float, minimize, restore and close behavior. The entire selection
 passes ordinary production admission before execution.
@@ -160,3 +159,11 @@ rules and this user's date format. **Copy note** copies the selected saved note'
 title and body. Both use the public typed scoped clipboard service and report
 success or the device's unavailable/denied outcome. Copying needs no network
 provider, account or sign-in. Calendar remains fully useful offline.
+
+
+## Manager lifecycle acceptance
+
+[The release lifecycle guide](docs/manager-lifecycle.md) covers installation,
+exact updates, disabled releases, matching repair and deliberate data removal.
+Calendar 0.8.1 preserves the 0.8.0 pure date/notes representation and SDK 0.8.0
+contract. Manager changes require Rookframe's RFG-230 release.

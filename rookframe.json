@@ -3,7 +3,7 @@
   "id": "aae579da-5392-4507-8eaa-0d918af58076",
   "kind": "optional",
   "name": "Calendar",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "summary": "Calendar",
   "sdk": {
     "edition": "2029",
