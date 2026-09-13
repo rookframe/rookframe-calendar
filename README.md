@@ -12,9 +12,10 @@ Package version: `0.9.1`. SDK Edition: `2029`, minimum revision `1`.
 
 ![Saved dated notes in the Calendar window](docs/screenshots/calendar-notes.png)
 
-These are native Rookframe desktop captures of Calendar 0.9.1, using the
+These are native Rookframe desktop captures of Calendar 0.9.0, using the
 controlled System Extension for the tabletop. Calendar owns the date-and-notes
-window; the host owns the surrounding workspace and durable World save.
+window; the host owns the surrounding workspace and durable World save. The
+captures are reused from RFG-231; Calendar 0.9.1 preserves this authored UI.
 
 ## Clean clone
 
