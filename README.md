@@ -43,13 +43,18 @@ entering the editor, and Project → Tools offers Package Check and Build. Open
 `rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window.tscn` to edit or
 run the normal authored scene. The UI uses the separately installed public Theme, TextField and TextArea components, with authored summary panels. Rookframe owns the Rail slot and managed window chrome.
 
-The initial export configuration contains only `desktop` for macOS. On Windows
-or Linux select the native platform in the desktop export preset. Add other
-Rookframe profile presets only when intended; keep textual scripts and exclude
-authoring dependencies/registries. The build command exports every configured
-profile, verifies prepared contents, and writes one complete `.rookpackage` to
-`build/`. A new build receives a fresh UUID; reinstallation uses the existing
-archive unchanged. No publication or account is needed to build locally.
+Calendar has no OS dependency. The same published `.rookpackage` supplies its
+shared code and resources on iOS, Android, Linux, macOS and Windows. Its phone,
+tablet and desktop Presentations select the appropriate layout; Rookframe uses
+the documented Presentation fallback when a layout is absent. Use a Rookframe
+build containing the RFG-231 portability fix.
+
+The immutable v0.9.0 release was produced by its pinned SDK, which used the legacy
+`desktop` archive-member label. That label does not restrict where Calendar can
+run. Reinstall the published archive unchanged. SDK 0.9.2 and newer author one
+shared `package` artifact, with all required texture formats included automatically.
+A new build receives a fresh UUID. No publication or account is needed to build
+locally.
 
 In Rookframe, create a World with a controlled System Extension. Open Main Menu → Installed Packages → Import Local Archive, choose
 the build. In World Details → Packages, include Calendar. Open the World and click Calendar's document
