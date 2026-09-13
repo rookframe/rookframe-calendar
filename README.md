@@ -6,7 +6,7 @@ The GM sets or advances the saved World date and maintains dated notes. The exam
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.7.0`. SDK Edition: `2027`, minimum revision `8`.
+Package version: `0.8.0`. SDK Edition: `2029`, minimum revision `1`.
 
 ## Clean clone
 
@@ -23,7 +23,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /p
 python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.7.0** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.8.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `238339d390ec01873585c002917c164948a0578d`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.

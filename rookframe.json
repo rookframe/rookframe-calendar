@@ -3,11 +3,11 @@
   "id": "aae579da-5392-4507-8eaa-0d918af58076",
   "kind": "optional",
   "name": "Calendar",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "summary": "Calendar",
   "sdk": {
-    "edition": "2027",
-    "minimumRevision": 8
+    "edition": "2029",
+    "minimumRevision": 1
   },
   "rookframeCompatibility": {
     "minimum": "0.1.0",
