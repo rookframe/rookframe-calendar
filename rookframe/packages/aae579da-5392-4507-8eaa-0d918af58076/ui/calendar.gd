@@ -1,8 +1,12 @@
 extends "res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/window.gd"
 
+const SettingsScope = SDK.SettingsScope
 const GregorianDate = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/gregorian_date.gd")
 const CalendarData = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_data.gd")
 const CalendarNote = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_note.gd")
+const DATE_FORMAT: SDK.TextSetting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/date_format.tres")
+const CALENDAR_TITLE: SDK.TextSetting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/calendar_title.tres")
+const MONTHS: Array[String] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 const TextField = preload("res://rookframe/ui/components/forms/text_field.gd")
 const TextArea = preload("res://rookframe/ui/components/forms/text_area.gd")
 
@@ -21,6 +25,8 @@ var selected_note_id: int = 0
 var editing_note_id: int = 0
 
 func ready() -> void:
+	if sdk != null:
+		sdk.settings.changed.connect(settings_changed)
 	get_node("Layout/Header").text = translated("Calendar")
 	get_node("Layout/WorldDate").text = translated("World date not set")
 	date_field.label_text = translated("View date")
@@ -64,7 +70,8 @@ func read_calendar() -> CalendarData:
 	return calendar
 
 func refresh_calendar(calendar: CalendarData) -> void:
-	get_node("Layout/WorldDate").text = translated("World date: ") + calendar.date.iso() if calendar.initialized else translated("World date not set")
+	get_node("Layout/Header").text = sdk.settings.world.text(CALENDAR_TITLE)
+	get_node("Layout/WorldDate").text = translated("World date: ") + display_date(calendar.date) if calendar.initialized else translated("World date not set")
 	var matching: Array[CalendarNote] = calendar.notes_for(viewed_date.iso())
 	var selected: CalendarNote = null
 	var index: int = 0
@@ -240,3 +247,14 @@ func show_mode(mode: int) -> void:
 	get_node("Layout/SaveNote").visible = editing
 	get_node("Layout/WorldDateActions").visible = browsing
 	get_node("Layout/NewNote").visible = browsing
+
+
+func settings_changed(_scope: SettingsScope.Kind) -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar != null:
+		refresh_calendar(calendar)
+
+func display_date(date: GregorianDate) -> String:
+	if sdk != null and sdk.settings.user.text(DATE_FORMAT) == "Day month year":
+		return "%d %s %04d" % [date.day, MONTHS[date.month - 1], date.year]
+	return date.iso()

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=3]
+[ext_resource type="Script" path="res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/text_setting.gd" id="1"]
+[resource]
+script = ExtResource("1")
+key = "date_format"
+title = "Date display"
+description = "How dates appear on this installation. Date entry always uses YYYY-MM-DD."
+default_value = "ISO"
+choices = PackedStringArray("ISO", "Day month year")
