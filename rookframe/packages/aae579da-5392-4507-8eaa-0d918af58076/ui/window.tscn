@@ -36,6 +36,12 @@ layout_mode = 2
 theme_type_variation = &"RookframeMeta"
 text = "World date not set"
 
+[node name="WorldDateActions" type="Button" parent="Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeSecondaryButton"
+text = "Set or advance World date"
+
 [node name="Body" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -70,11 +76,6 @@ custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeQuietButton"
 text = "Advance one day"
 
-[node name="NotesHeading" type="Label" parent="Layout/Body/Fields"]
-layout_mode = 2
-theme_type_variation = &"RookframeHeading"
-text = "Dated notes"
-
 [node name="SavedNote" type="PanelContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
 theme_type_variation = &"RookframeStructuredRow"
@@ -87,15 +88,6 @@ theme_override_constants/separation = 8
 layout_mode = 2
 text = "No notes for this date"
 autowrap_mode = 2
-
-[node name="Detail" type="Label" parent="Layout/Body/Fields/SavedNote/Copy"]
-layout_mode = 2
-theme_type_variation = &"RookframeMeta"
-text = "0001-01-01"
-
-[node name="Status" type="Label" parent="Layout/Body/Fields/SavedNote/Copy"]
-layout_mode = 2
-theme_type_variation = &"RookframeMeta"
 
 [node name="SavedBody" type="Label" parent="Layout/Body/Fields"]
 layout_mode = 2
@@ -124,27 +116,23 @@ custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeQuietButton"
 text = "Next note"
 
-[node name="NoteActions" type="VBoxContainer" parent="Layout/Body/Fields"]
+[node name="NoteActions" type="HBoxContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Edit" type="Button" parent="Layout/Body/Fields/NoteActions"]
 layout_mode = 2
+size_flags_horizontal = 3
 custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeSecondaryButton"
-text = "Edit selected note"
+text = "Edit note"
 
 [node name="Delete" type="Button" parent="Layout/Body/Fields/NoteActions"]
 layout_mode = 2
+size_flags_horizontal = 3
 custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeDangerButton"
-text = "Delete selected note"
-
-[node name="New" type="Button" parent="Layout/Body/Fields/NoteActions"]
-layout_mode = 2
-custom_minimum_size = Vector2(44, 44)
-theme_type_variation = &"RookframeQuietButton"
-text = "New note / clear draft"
+text = "Delete note"
 
 [node name="Draft" type="PanelContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
@@ -176,6 +164,12 @@ label_text = "Note title"
 layout_mode = 2
 label_text = "Note"
 placeholder = "Write a note for this date…"
+
+[node name="NewNote" type="Button" parent="Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframePrimaryButton"
+text = "New note"
 
 [node name="Status" type="Label" parent="Layout"]
 layout_mode = 2
@@ -209,6 +203,8 @@ text = "Save note"
 
 [connection signal="pressed" from="Layout/Body/Fields/NoteActions/Delete" to="." method="delete_note"]
 
-[connection signal="pressed" from="Layout/Body/Fields/NoteActions/New" to="." method="new_note"]
+[connection signal="pressed" from="Layout/NewNote" to="." method="new_note"]
 
 [connection signal="pressed" from="Layout/BackToNotes" to="." method="show_notes"]
+
+[connection signal="pressed" from="Layout/WorldDateActions" to="." method="show_world_date"]

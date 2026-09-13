@@ -113,6 +113,7 @@ const Rooks = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af5
 const DistanceResult = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/distance_result.gd")
 const Scenes = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/scenes.gd")
 const Content = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content.gd")
+const ContentKind = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_kind.gd")
 const Windows = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/windows.gd")
 
 func context() -> WorldContext:

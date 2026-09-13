@@ -33,7 +33,7 @@ dependency or hand-written host adapter.
 Open `project.godot` in Godot. The SDK plugin checks/generates the facade when
 entering the editor, and Project → Tools offers Package Check and Build. Open
 `rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window.tscn` to edit or
-run the normal authored scene. The UI uses the separately installed public Theme, TextField, TextArea and StructuredRow components. Rookframe owns the Rail slot and managed window chrome.
+run the normal authored scene. The UI uses the separately installed public Theme, TextField and TextArea components, with authored summary panels. Rookframe owns the Rail slot and managed window chrome.
 
 The initial export configuration contains only `desktop` for macOS. On Windows
 or Linux select the native platform in the desktop export preset. Add other
@@ -77,6 +77,8 @@ adapter, string-based mount call or rejected-control disposal.
 Paths in this section are beneath `rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/`.
 
 ## Date and note workflow
+
+Choose **Set or advance World date** to change the World date, then **Back to notes** to browse the selected date. **New note** and **Edit note** open the compact editor; **Save note** returns to the saved list.
 
 The supported range is **0001-01-01 through 9999-12-31**, using the proleptic
 Gregorian calendar and canonical `YYYY-MM-DD` spelling. A leap year is divisible

@@ -13,8 +13,6 @@ const TextArea = preload("res://rookframe/ui/components/forms/text_area.gd")
 @onready var draft_detail: Label = get_node("Layout/Body/Fields/Draft/Copy/Detail")
 @onready var draft_status: Label = get_node("Layout/Body/Fields/Draft/Copy/Status")
 @onready var saved_note: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Title")
-@onready var saved_detail: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Detail")
-@onready var saved_status: Label = get_node("Layout/Body/Fields/SavedNote/Copy/Status")
 @onready var saved_body: Label = get_node("Layout/Body/Fields/SavedBody")
 @onready var note_count: Label = get_node("Layout/Body/Fields/NoteCount")
 @onready var status: Label = get_node("Layout/Status")
@@ -32,7 +30,6 @@ func ready() -> void:
 	note_body.placeholder = translated("Write a note for this date…")
 	get_node("Layout/Body/Fields/DateActions/SetDate").text = translated("Set world date")
 	get_node("Layout/Body/Fields/DateActions/Advance").text = translated("Advance World one day")
-	get_node("Layout/Body/Fields/NotesHeading").text = translated("Notes for selected date")
 	get_node("Layout/SaveNote").text = translated("Save note")
 	date_field.value = viewed_date.iso()
 	var calendar: CalendarData = read_calendar()
@@ -81,8 +78,6 @@ func refresh_calendar(calendar: CalendarData) -> void:
 		index = 1
 	selected_note_id = selected.id if selected != null else 0
 	saved_note.text = selected.title if selected != null else translated("No notes for this date")
-	saved_detail.text = viewed_date.iso()
-	saved_status.text = translated("Saved") if selected != null else ""
 	saved_body.text = selected.body if selected != null else ""
 	note_count.text = "%d / %d" % [index if selected != null else 0, matching.size()]
 	var context: SDK.WorldContext = sdk.context()
@@ -90,7 +85,7 @@ func refresh_calendar(calendar: CalendarData) -> void:
 	get_node("Layout/Body/Fields/DateActions/SetDate").disabled = not can_edit
 	get_node("Layout/Body/Fields/DateActions/Advance").disabled = not can_edit or not calendar.initialized
 	get_node("Layout/SaveNote").disabled = not can_edit or not calendar.initialized
-	get_node("Layout/Body/Fields/NoteActions/New").disabled = not can_edit or not calendar.initialized
+	get_node("Layout/NewNote").disabled = not can_edit or not calendar.initialized
 	get_node("Layout/Body/Fields/NoteActions/Edit").disabled = not can_edit or selected == null
 	get_node("Layout/Body/Fields/NoteActions/Delete").disabled = not can_edit or selected == null
 	get_node("Layout/Body/Fields/NoteNavigation/Previous").disabled = index <= 1
@@ -202,7 +197,7 @@ func edit_note() -> void:
 		note_title.value = note.title
 		note_body.value = note.body
 		refresh_draft("")
-		show_editor(true)
+		show_mode(2)
 
 func new_note() -> void:
 	editing_note_id = 0
@@ -210,7 +205,7 @@ func new_note() -> void:
 	note_body.value = ""
 	note_body.error_text = ""
 	refresh_draft("")
-	show_editor(true)
+	show_mode(2)
 
 func delete_note() -> void:
 	var calendar: CalendarData = read_calendar()
@@ -224,18 +219,24 @@ func delete_note() -> void:
 		refresh_calendar(calendar)
 
 func show_notes() -> void:
-	show_editor(false)
+	show_mode(0)
 
-func show_editor(editing: bool) -> void:
-	get_node("Layout/Body/Fields/DateActions").visible = not editing
-	get_node("Layout/Body/Fields/NotesHeading").visible = not editing
-	get_node("Layout/Body/Fields/SavedNote").visible = not editing
-	saved_body.visible = not editing
-	note_count.visible = not editing
-	get_node("Layout/Body/Fields/NoteNavigation").visible = not editing
-	get_node("Layout/Body/Fields/NoteActions").visible = not editing
+func show_world_date() -> void:
+	show_mode(1)
+
+func show_mode(mode: int) -> void:
+	var editing: bool = mode == 2
+	var browsing: bool = mode == 0
+	get_node("Layout/Body/Fields/DateActions").visible = mode == 1
+	get_node("Layout/Body/Fields/SavedNote").visible = browsing
+	saved_body.visible = browsing
+	note_count.visible = browsing
+	get_node("Layout/Body/Fields/NoteNavigation").visible = browsing
+	get_node("Layout/Body/Fields/NoteActions").visible = browsing
 	get_node("Layout/Body/Fields/Draft").visible = editing
 	note_title.visible = editing
 	note_body.visible = editing
-	get_node("Layout/BackToNotes").visible = editing
+	get_node("Layout/BackToNotes").visible = not browsing
 	get_node("Layout/SaveNote").visible = editing
+	get_node("Layout/WorldDateActions").visible = browsing
+	get_node("Layout/NewNote").visible = browsing

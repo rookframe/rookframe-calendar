@@ -2,12 +2,23 @@
 extends RefCounted
 
 const ContentReference = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_reference.gd")
+const ContentKind = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_kind.gd")
 var reference: ContentReference
 var title: String
-var kind: String
+var kind: ContentKind.Value
 var available: bool
 func _init(value: Dictionary) -> void:
 	reference = ContentReference.new(value.packageId, value.localId)
 	title = value.displayName
-	kind = value.type
+	kind = ContentKind.Value.UNKNOWN
 	available = value.available
+	if value.type == "actor_definition":
+		kind = ContentKind.Value.ACTOR_DEFINITION
+	if value.type == "miniature":
+		kind = ContentKind.Value.MINIATURE
+	if value.type == "prop":
+		kind = ContentKind.Value.PROP
+	if value.type == "surface_finish":
+		kind = ContentKind.Value.SURFACE_FINISH
+	if value.type == "wall_style":
+		kind = ContentKind.Value.WALL_STYLE

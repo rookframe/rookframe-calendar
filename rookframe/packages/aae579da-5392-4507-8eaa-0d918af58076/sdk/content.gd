@@ -4,13 +4,13 @@ extends RefCounted
 const ContentReference = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_reference.gd")
 const ContentEntryResult = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_entry_result.gd")
 const ContentEntryListResult = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_entry_list_result.gd")
+const ContentKind = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/content_kind.gd")
 
 var _host: Object
 func _init(host: Object) -> void:
 	_host = host
 
-enum Kind { ALL, ACTOR_DEFINITION, MINIATURE, PROP, SURFACE_FINISH, WALL_STYLE }
-func list(kind: Kind = Kind.ALL) -> ContentEntryListResult:
+func list(kind: ContentKind.Value = ContentKind.Value.ALL) -> ContentEntryListResult:
 	return ContentEntryListResult.new(_host.ListContent(kind))
 func read(reference: ContentReference) -> ContentEntryResult:
 	return ContentEntryResult.new(_host.ReadContent(reference.package_id, reference.local_id))
