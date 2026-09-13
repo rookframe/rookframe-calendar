@@ -4,24 +4,26 @@ Calendar is an ordinary optional Package. Manager uses the same admission,
 installed store, selection and recovery transactions for Calendar as for other
 Packages. No Calendar-specific trust setting, loader or migration service exists.
 
-Build 0.8.0 from its source revision and 0.8.1 from this branch with the documented
-SDK build command. Keep each resulting immutable archive: rebuilding creates a
-new build identity and fingerprint, even if the displayed version is unchanged.
-The SDK and UI Kit pins do not change for this documentation/acceptance release.
+For the current update journey, keep the published [0.9.0 archive](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.0/Calendar-0.9.0.rookpackage)
+and [0.9.1 archive](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.1/Calendar-0.9.1.rookpackage).
+Each is immutable: rebuilding creates a new identity and fingerprint even when
+the displayed version is unchanged. Version 0.9.1 uses SDK 0.9.2 and the exact
+UI Kit pin in `plug.gd`; 0.9.0 keeps its original dependencies.
 
-1. From Main Menu → Installed Packages → Install Package, import the 0.8.0 archive. Choose the
+1. From Main Menu → Installed Packages → Install Package, import the 0.9.0 archive. Choose the
    System against which an optional install should be checked. In a stopped
    World's Packages, open Calendar's detail page, choose Use in this World and open that World.
 2. Open Calendar from the left Rail. Set the Gregorian date to 2024-02-28,
    advance one day, and save a note titled “Leap day” with body “The gate opens.”
    Leave the World normally.
-3. Import 0.8.1, then World Details → Packages →
-   Review installed updates. Review 0.8.0 → 0.8.1 and apply once. Reopen: the
-   date is 2024-02-29 and the note remains. Current target Settings follow the
+3. Import 0.9.1, then World Details → Packages →
+   Review installed updates. Review 0.9.0 → 0.9.1 and apply once. Reopen: the
+   date is 2024-02-29 and the note remains. My Settings → Day month year displays
+   “Thursday, 29 February 2024”; a saved World title also survives the update. Current target Settings follow the
    existing SDK Settings migration contract; Package World Data stays opaque.
 4. Stop, explicitly disable Calendar, and reopen. No Calendar Presentation or
    Implementation runs. Stop and re-enable it: the same date and note return.
-5. Stop, open Calendar → Repair this version → Import matching archive and supply the **same exact 0.8.1 archive**.
+5. Stop, open Calendar → Repair this version → Import matching archive and supply the **same exact 0.9.1 archive**.
    An intact release reports Already installed; missing/damaged files are repaired
    into new immutable materialization. Reopen and verify the date and note.
    A rebuilt archive is replacement, not an exact repair. A changed/private/
@@ -52,7 +54,9 @@ update/reopen, disable/re-enable and exact repair of damaged installed bytes.
 Package Deletion removed the World data and settings; selecting Calendar again
 showed “World date not set”. Uninstall succeeded after removing the selection.
 
-The host's opt-in `ManagerPackages.gd` acceptance takes the two built archive
-paths. It uses production admission, Manager import and World activation. The
-Calendar-specific selectors live only in that acceptance fixture. The Package
-uses its generated typed SDK and the independently installed UI Kit throughout.
+
+That historical acceptance is an observation, not a maintained extra E2E suite.
+RFG-232 uses the existing Manager/store/preparation and bounded Godot seams for
+the 0.9.0 → 0.9.1 journey. Its source, artifact fingerprints, actual outcomes and
+platform limits are recorded in the application repository's `evidence/rfg-232/`.
+The four retained platform journeys and device-free Fast Gate stay unchanged.
