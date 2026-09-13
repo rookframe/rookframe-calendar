@@ -42,6 +42,13 @@ custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeSecondaryButton"
 text = "Set or advance World date"
 
+[node name="CopyDate" type="Button" parent="Layout"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Copy World date"
+disabled = true
+
 [node name="Body" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -116,7 +123,7 @@ custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeQuietButton"
 text = "Next note"
 
-[node name="NoteActions" type="HBoxContainer" parent="Layout/Body/Fields"]
+[node name="NoteActions" type="HFlowContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
@@ -133,6 +140,13 @@ size_flags_horizontal = 3
 custom_minimum_size = Vector2(44, 44)
 theme_type_variation = &"RookframeDangerButton"
 text = "Delete note"
+
+[node name="Copy" type="Button" parent="Layout/Body/Fields/NoteActions"]
+layout_mode = 2
+custom_minimum_size = Vector2(44, 44)
+theme_type_variation = &"RookframeQuietButton"
+text = "Copy note"
+disabled = true
 
 [node name="Draft" type="PanelContainer" parent="Layout/Body/Fields"]
 layout_mode = 2
@@ -208,3 +222,6 @@ text = "Save note"
 [connection signal="pressed" from="Layout/BackToNotes" to="." method="show_notes"]
 
 [connection signal="pressed" from="Layout/WorldDateActions" to="." method="show_world_date"]
+
+[connection signal="pressed" from="Layout/CopyDate" to="." method="copy_date"]
+[connection signal="pressed" from="Layout/Body/Fields/NoteActions/Copy" to="." method="copy_note"]

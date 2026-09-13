@@ -36,6 +36,8 @@ func ready() -> void:
 	note_body.placeholder = translated("Write a note for this date…")
 	get_node("Layout/Body/Fields/DateActions/SetDate").text = translated("Set world date")
 	get_node("Layout/Body/Fields/DateActions/Advance").text = translated("Advance World one day")
+	get_node("Layout/CopyDate").text = translated("Copy World date")
+	get_node("Layout/Body/Fields/NoteActions/Copy").text = translated("Copy note")
 	get_node("Layout/SaveNote").text = translated("Save note")
 	date_field.value = rules().format_date(viewed_date)
 	var calendar: CalendarData = read_calendar()
@@ -91,6 +93,8 @@ func refresh_calendar(calendar: CalendarData) -> void:
 	var can_edit: bool = context.ok and context.is_gm
 	get_node("Layout/Body/Fields/DateActions/SetDate").disabled = not can_edit
 	get_node("Layout/Body/Fields/DateActions/Advance").disabled = not can_edit or not calendar.initialized
+	get_node("Layout/CopyDate").disabled = not calendar.initialized
+	get_node("Layout/Body/Fields/NoteActions/Copy").disabled = selected == null
 	get_node("Layout/SaveNote").disabled = not can_edit or not calendar.initialized
 	get_node("Layout/NewNote").disabled = not can_edit or not calendar.initialized
 	get_node("Layout/Body/Fields/NoteActions/Edit").disabled = not can_edit or selected == null
@@ -270,3 +274,21 @@ func read_viewed_date(value: String) -> bool:
 
 func display_date(date: GregorianDate) -> String:
 	return rules().format_date(date, sdk != null and sdk.settings.user.text(DATE_FORMAT) == "Day month year")
+
+
+func copy_date() -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null or not calendar.initialized:
+		return
+	var result: SDK.IntegrationResult = sdk.clipboard.write_text(display_date(calendar.date))
+	status.text = translated("Date copied.") if result.ok else result.message
+
+func copy_note() -> void:
+	var calendar: CalendarData = read_calendar()
+	if calendar == null:
+		return
+	var selected: CalendarNote = calendar.note_by_id(selected_note_id)
+	if selected == null:
+		return
+	var result: SDK.IntegrationResult = sdk.clipboard.write_text(selected.title + "\n" + selected.body)
+	status.text = translated("Note copied.") if result.ok else result.message
