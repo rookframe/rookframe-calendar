@@ -6,3 +6,7 @@ build/
 __pycache__/
 *.pyc
 .DS_Store
+
+# GdUnit4 development dependency and generated reports
+/addons/gdUnit4/
+/reports/

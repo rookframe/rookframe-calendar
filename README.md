@@ -226,3 +226,23 @@ Publisher registration, email confirmation and sign-in are documented in the
 They are only needed for the Catalogue record. Building, testing and direct
 installation need no Publisher account. The existing custom calendar/settings
 features remain part of Calendar; this release introduces no new date model.
+
+
+## Automated tests
+
+All extension suites use official GdUnit4 6.2.1, pinned by commit in `plug.gd`
+and verified with stock Godot 4.7.2 Mono. Install development dependencies and run:
+
+```sh
+godot --headless --path . --script plug.gd install
+python3 tests/run_domain_tests.py --godot /Applications/Godot_mono.app/Contents/MacOS/Godot
+```
+
+The runner discovers every suite under `tests/` (2 cases at migration),
+imports resources, and requires a fresh nonempty passing JUnit report. Reports
+are written under `reports/<run>/report_1/` as XML and HTML. Failures, native
+errors, timeouts, orphan Nodes and skips fail the run. Tests extend
+`GdUnitTestSuite`; use `test_*`, native assertions, `auto_free` and signal/await
+completion. The host boundary is substituted where required; real host and
+platform acceptance checks live in rookframe-godot. Tests, reports and GdUnit
+are excluded from Package exports.
