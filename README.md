@@ -1,12 +1,24 @@
 # Calendar
 
+## Current artwork release: 0.9.2
+
+Install from the public [0.9.2 Manifest](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.2/Calendar-0.9.2.json).
+The [checked archive](https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.2/Calendar-0.9.2.rookpackage) belongs to the same release.
+For source, check out tag `v0.9.2` and open this authoring project.
+Run `godot --headless --path . --script plug.gd install` to acquire SDK 0.34.0
+and the retained UI Kit pin, then use the SDK Package check/build commands.
+The output archive name for publication is `Calendar-0.9.2.rookpackage`.
+This release adds artwork using Manifest format 2 and requires a Rookframe
+runtime with format-2 support. Earlier version examples below describe their
+original releases; use the links and tag above for the artwork update.
+
 An ordinary optional Rookframe Package, developed throughout Project 02. It
 opens an authored date view and dated-note editor from the left Rail.
 The GM sets or advances the saved World date and maintains dated notes. The example uses
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.9.1`. SDK Edition: `2029`, minimum revision `1`.
+Package version: `0.9.2`. SDK Edition: `2029`, minimum revision `1`.
 
 ![Setting and advancing the World date](docs/screenshots/calendar-date.png)
 
@@ -19,19 +31,19 @@ window; the host owns the surrounding workspace and durable World save.
 ## Clean clone
 
 Install Godot **4.7.2** with matching export templates, Git, Python **3.10+** and
-the **.NET 8 runtime**. No Rookframe application checkout or private host
+the **.NET 10.0.12 or later 10.0 patch runtime**. No Rookframe application checkout or private host
 assemblies are required. The gd-plug bootstrap and its license are included.
 
 ```sh
-git clone --branch v0.9.1 https://github.com/rookframe/rookframe-calendar.git
+git clone --branch v0.9.2 https://github.com/rookframe/rookframe-calendar.git
 cd rookframe-calendar
 /path/to/godot --headless --path . --script plug.gd install
 python3 addons/rookframe_sdk/rookframe_authoring.py facade --project .
 python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /path/to/godot
-python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --output build/Calendar-0.9.1.rookpackage
+python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --output build/Calendar-0.9.2.rookpackage
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.9.2** and UI Kit
+The two dependencies in `plug.gd` are SDK **v0.34.0** and UI Kit
 **v1.0.0-rc.1** at exact commit
 `9de97beeede7f9d803e6ea0abef67730cdc84692`. The independent authoring lock is
 `.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
@@ -225,3 +237,7 @@ Publisher registration, email confirmation and sign-in are documented in the
 They are only needed for the Catalogue record. Building, testing and direct
 installation need no Publisher account. The existing custom calendar/settings
 features remain part of Calendar; this release introduces no new date model.
+
+## Release 0.9.2: Package artwork
+
+This update adds a cover and an image gallery to the existing 0.9.1 content. It uses Manifest format 2 and requires a Rookframe runtime with format-2 support. The authoring kit is SDK 0.34.0; the existing SDK Edition, minimum revision, and UI Kit pin are retained. Source media provenance is recorded in `source/media-provenance.json`.

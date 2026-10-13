@@ -1,9 +1,9 @@
 {
-  "manifestVersion": 1,
+  "manifestVersion": 2,
   "id": "aae579da-5392-4507-8eaa-0d918af58076",
   "kind": "optional",
   "name": "Calendar",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "summary": "Keep a World date and dated notes, with classic or custom calendar rules.",
   "sdk": {
     "edition": "2029",
@@ -47,6 +47,20 @@
     }
   ],
   "homepage": "https://github.com/rookframe/rookframe-calendar",
-  "manifest": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.1/rookframe.json",
-  "download": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.1/Calendar-0.9.1.rookpackage"
+  "manifest": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.2/Calendar-0.9.2.json",
+  "download": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.2/Calendar-0.9.2.rookpackage",
+  "media": {
+    "gallery": [
+      {
+        "type": "image",
+        "path": "media/7811ec554d25220be6b2bacb36fdd2261532e29f5ac685520350c8843ae4410d.png",
+        "caption": "Browse and edit dated World notes."
+      }
+    ],
+    "cover": {
+      "type": "image",
+      "path": "media/b96fd2a2bb75d9eaae53013cc16d5f83d4999360299ca9e10c1d3d11e42dbb2b.png",
+      "caption": "Set and advance the World date."
+    }
+  }
 }
