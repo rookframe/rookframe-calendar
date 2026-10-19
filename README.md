@@ -6,7 +6,7 @@ The GM sets or advances the saved World date and maintains dated notes. The exam
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.9.1`. SDK Edition: `2029`, minimum revision `1`.
+Package version: `0.9.4`. SDK Edition: `2029`, minimum revision `34`.
 
 ![Setting and advancing the World date](docs/screenshots/calendar-date.png)
 
@@ -19,58 +19,39 @@ captures are reused from RFG-231; Calendar 0.9.1 preserves this authored UI.
 
 ## Clean clone
 
-Install Godot **4.7.2** with matching export templates, Git, Python **3.10+** and
-the **.NET 8 runtime**. No Rookframe application checkout or private host
-assemblies are required. The gd-plug bootstrap and its license are included.
+Use stock Godot **4.7.2 .NET**, matching export templates, Git, Python **3.10+**
+and an installed Rookframe application. The gd-plug bootstrap and license are included.
 
 ```sh
-git clone --branch v0.9.1 https://github.com/rookframe/rookframe-calendar.git
+git clone https://github.com/rookframe/rookframe-calendar.git
 cd rookframe-calendar
 /path/to/godot --headless --path . --script plug.gd install
-python3 addons/rookframe_sdk/rookframe_authoring.py facade --project .
-python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /path/to/godot
-python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --output build/Calendar-0.9.1.rookpackage
+python3 addons/rookframe_sdk/rookframe_authoring.py check --project . --godot /path/to/godot --rookframe /path/to/Rookframe
+python3 addons/rookframe_sdk/rookframe_authoring.py build --project . --godot /path/to/godot --rookframe /path/to/Rookframe --output build/calendar.rookpackage
 ```
 
-The two dependencies in `plug.gd` are SDK **v0.9.2** and UI Kit
-**v1.0.0-rc.1** at exact commit
-`9de97beeede7f9d803e6ea0abef67730cdc84692`. The independent authoring lock is
-`.rookframe/authoring.lock.json`. Ordinary commands do not update either pin.
-The generated facade is committed as Package-owned source; it is not a third
-dependency or hand-written host adapter.
+The exact SDK, Development Plugin and UI Kit dependencies are recorded in
+`plug.gd` and `.rookframe/authoring.lock.json`. Downloaded SDK scripts live at
+`rookframe/sdk/`; no generation or C# build is needed. The installed application
+checks source and exported archives. Use a fresh output filename for every build.
 
-Open `project.godot` in Godot. The SDK plugin checks/generates the facade when
-entering the editor, and Project → Tools offers Package Check and Build. Open
-`rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/window.tscn` to edit or
-run the normal authored scene. The UI uses the separately installed public Theme, TextField and TextArea components, with authored summary panels. Rookframe owns the Rail slot and managed window chrome.
+Open `project.godot` and enable **Rookframe Development**. Use its Package Check
+and Build commands, or select the installed Rookframe application and a saved
+Development World in the dock. An editable Calendar needs a published System
+Manifest URL. Reuse that World while saving scripts and scenes.
 
-Calendar has no OS dependency. The same published `.rookpackage` supplies its
-shared code and resources on iOS, Android, Linux, macOS and Windows. Its phone,
-tablet and desktop Presentations select the appropriate layout; Rookframe uses
-the documented Presentation fallback when a layout is absent. Use a Rookframe
-build containing the RFG-231 portability fix.
+Calendar's archive contains its own source and assets. Rookframe supplies the SDK
+and UI Kit. Commit authored files and exact dependency pins; ignore downloaded
+dependencies, caches, local World configuration and build output.
 
-Calendar 0.9.1 uses SDK 0.9.2 to produce one shared `package.pck`, including
-all declared Presentations. The exporter name in `export_presets.cfg` describes
-the local Godot exporter, not a Package OS target. The unchanged Calendar 0.9.0
-release uses the legacy `desktop` archive-member label and works on the same
-operating systems. A new build receives a fresh UUID; use the published exact
-archive for repair rather than rebuilding it. No publication or account is
-needed to build locally.
-
-In Rookframe, create a World with a controlled System Extension. Open Main Menu → Installed Packages → Import Local Archive, choose
-the build. In World Details → Packages, include Calendar. Open the World and click Calendar's document
-icon in the left Rail. Its initial scene opens in the normal managed window,
-with dock, float, minimize, restore and close behavior. The entire selection
-passes ordinary production admission before execution.
-
-See the [SDK authoring guide](https://github.com/rookframe/rookframe-sdk) and
-[UI Kit component API](https://github.com/rookframe/rookframe-ui-kit/blob/9de97beeede7f9d803e6ea0abef67730cdc84692/docs/public-components.md).
-Calendar 0.9.1 is checked against Rookframe 0.1.0 with SDK Edition 2029 revision 1 support.
+For ordinary application checks, publish the reviewed Package, install it using
+its public HTTPS Manifest URL, and enable Calendar in the World. Participants
+joining the World acquire the same release automatically. Local archive imports
+are not part of this workflow.
 
 ## How the integration is authored
 
-`ui/desktop.gd`, `ui/tablet.gd` and `ui/phone.gd` extend the generated SDK Presentation base. Rookframe binds
+`ui/desktop.gd`, `ui/tablet.gd` and `ui/phone.gd` extend the SDK Presentation base. Rookframe binds
 its typed `sdk` automatically before `compose()`:
 
 ```gdscript
@@ -222,7 +203,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py catalogue submit \
 ```
 
 Publisher registration, email confirmation and sign-in are documented in the
-[SDK publication guide](https://github.com/rookframe/rookframe-sdk/blob/v0.9.2/PUBLICATION.md).
+[SDK publication guide](https://github.com/rookframe/rookframe-sdk/blob/v0.36.0-rc.3/PUBLICATION.md).
 They are only needed for the Catalogue record. Building, testing and direct
 installation need no Publisher account. The existing custom calendar/settings
 features remain part of Calendar; this release introduces no new date model.
@@ -230,19 +211,12 @@ features remain part of Calendar; this release introduces no new date model.
 
 ## Automated tests
 
-All extension suites use official GdUnit4 6.2.1, pinned by commit in `plug.gd`
-and verified with stock Godot 4.7.2 Mono. Install development dependencies and run:
+With dependencies installed, run the Calendar domain and settings checks:
 
 ```sh
-godot --headless --path . --script plug.gd install
-python3 tests/run_domain_tests.py --godot /Applications/Godot_mono.app/Contents/MacOS/Godot
+python3 tests/run_domain_tests.py --godot /path/to/Godot
 ```
 
-The runner discovers every suite under `tests/` (2 cases at migration),
-imports resources, and requires a fresh nonempty passing JUnit report. Reports
-are written under `reports/<run>/report_1/` as XML and HTML. Failures, native
-errors, timeouts, orphan Nodes and skips fail the run. Tests extend
-`GdUnitTestSuite`; use `test_*`, native assertions, `auto_free` and signal/await
-completion. The host boundary is substituted where required; real host and
-platform acceptance checks live in rookframe-godot. Tests, reports and GdUnit
-are excluded from Package exports.
+The runner requires the `CALENDAR_DOMAIN PASS` marker and fails on engine errors
+or a timeout. It checks date arithmetic, persisted notes, custom calendars and
+month-setting validation. Host behavior is checked in rookframe-godot.

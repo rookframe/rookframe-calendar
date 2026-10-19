@@ -1,0 +1,16 @@
+[
+  {
+    "role": "cover",
+    "source": "docs/screenshots/calendar-date.png",
+    "sha256": "b96fd2a2bb75d9eaae53013cc16d5f83d4999360299ca9e10c1d3d11e42dbb2b",
+    "caption": "Set and advance the World date.",
+    "note": "Existing Package repository screenshot or asset preview, copied unchanged; original source attribution retained in the repository."
+  },
+  {
+    "role": "gallery",
+    "source": "docs/screenshots/calendar-notes.png",
+    "sha256": "7811ec554d25220be6b2bacb36fdd2261532e29f5ac685520350c8843ae4410d",
+    "caption": "Browse and edit dated World notes.",
+    "note": "Existing Package repository screenshot or asset preview, copied unchanged; original source attribution retained in the repository."
+  }
+]

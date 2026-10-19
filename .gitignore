@@ -10,3 +10,21 @@ __pycache__/
 # GdUnit4 development dependency and generated reports
 /addons/gdUnit4/
 /reports/
+
+rookframe/sdk/
+
+addons/rookframe_development/
+
+rookframe/development/
+
+.rookframe-development/
+
+.rookframe/development.json
+
+.rookframe/installed-application.json
+
+rookframe_ui_kit_provenance.json
+
+/dependencies/webrtc_native/lib/
+
+/addons/webrtc_native/lib/
