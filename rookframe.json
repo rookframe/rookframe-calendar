@@ -3,7 +3,7 @@
   "id": "aae579da-5392-4507-8eaa-0d918af58076",
   "kind": "optional",
   "name": "Calendar",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "summary": "Keep a World date and dated notes, with classic or custom calendar rules.",
   "sdk": {
     "edition": "2029",
@@ -47,8 +47,8 @@
     }
   ],
   "homepage": "https://github.com/rookframe/rookframe-calendar",
-  "manifest": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.3/Calendar-0.9.3.json",
-  "download": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.3/Calendar-0.9.3.rookpackage",
+  "manifest": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.4/Calendar-0.9.4.json",
+  "download": "https://github.com/rookframe/rookframe-calendar/releases/download/v0.9.4/Calendar-0.9.4.rookpackage",
   "media": {
     "gallery": [
       {

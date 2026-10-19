@@ -6,7 +6,7 @@ The GM sets or advances the saved World date and maintains dated notes. The exam
 classic Gregorian or custom calendar rules; it requires no remote account.
 
 Package ID: `aae579da-5392-4507-8eaa-0d918af58076`.
-Package version: `0.9.3`. SDK Edition: `2029`, minimum revision `34`.
+Package version: `0.9.4`. SDK Edition: `2029`, minimum revision `34`.
 
 ![Setting and advancing the World date](docs/screenshots/calendar-date.png)
 
