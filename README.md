@@ -203,7 +203,7 @@ python3 addons/rookframe_sdk/rookframe_authoring.py catalogue submit \
 ```
 
 Publisher registration, email confirmation and sign-in are documented in the
-[SDK publication guide](https://github.com/rookframe/rookframe-sdk/blob/v0.36.0-rc.2/PUBLICATION.md).
+[SDK publication guide](https://github.com/rookframe/rookframe-sdk/blob/v0.36.0-rc.3/PUBLICATION.md).
 They are only needed for the Catalogue record. Building, testing and direct
 installation need no Publisher account. The existing custom calendar/settings
 features remain part of Calendar; this release introduces no new date model.
