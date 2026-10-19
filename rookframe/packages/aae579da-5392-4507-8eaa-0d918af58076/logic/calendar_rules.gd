@@ -2,7 +2,7 @@ extends RefCounted
 
 ## Transient interpretation of Settings; retained World dates and notes keep their day identity.
 const Settings = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/settings.gd")
-const SDK = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/package_sdk_facade.gd")
+const SDK = preload("res://rookframe/sdk/package_sdk_facade.gd")
 const Date = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/gregorian_date.gd")
 var custom: bool = false
 var month_names: SDK.TextList

@@ -1,5 +1,5 @@
-extends "res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/settings_view.gd"
-const SDK = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/sdk/package_sdk_facade.gd")
+extends "res://rookframe/sdk/settings_view.gd"
+const SDK = preload("res://rookframe/sdk/package_sdk_facade.gd")
 const Settings = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/logic/settings.gd")
 const TextField = preload("res://rookframe/ui/components/forms/text_field.gd")
 const MonthSetting = preload("res://rookframe/packages/aae579da-5392-4507-8eaa-0d918af58076/ui/month_setting.gd")
